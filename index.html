@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bottle Finder — Find Your Perfect Water Bottle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            stone: { 50:'#fafaf9',100:'#f5f5f4',200:'#e7e5e4',300:'#d6d3d1',400:'#a8a29e',500:'#78716c',600:'#57534e',700:'#44403c',800:'#292524',900:'#1c1917' },
+            amber: { 50:'#fffbeb',100:'#fef3c7',200:'#fde68a',300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .step-slide { animation: slideIn 0.3s ease forwards; }
+    .step-slide-back { animation: slideInBack 0.3s ease forwards; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInBack { from { opacity: 0; transform: translateX(-32px); } to { opacity: 1; transform: translateX(0); } }
+    .option-tile { transition: border-color 0.15s, background-color 0.15s, transform 0.15s; }
+    .option-tile:hover { transform: translateY(-1px); }
+    .option-tile.selected { border-color: #d97706; background-color: #fffbeb; }
+    .btn-primary { background: #1c1917; color: #fff; transition: background 0.15s, transform 0.15s; }
+    .btn-primary:hover { background: #292524; transform: translateY(-1px); }
+    .btn-primary:disabled { background: #d6d3d1; cursor: not-allowed; transform: none; }
+    .card-hover { transition: box-shadow 0.2s, transform 0.2s; }
+    .card-hover:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .progress-bar { transition: width 0.4s ease; }
+    .bottle-img-wrap { background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%); }
+  </style>
+</head>
+<body class="bg-white text-stone-800 antialiased">
+
+<!-- NAV -->
+<header class="border-b border-stone-100 sticky top-0 bg-white/95 backdrop-blur-sm z-50">
+  <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i data-lucide="droplets" class="w-5 h-5 text-amber-600"></i>
+      <span class="font-semibold text-stone-900 text-lg tracking-tight">Bottle Finder</span>
+    </div>
+    <button onclick="startQuiz()" class="btn-primary text-sm font-medium px-4 py-2 rounded-xl">
+      Find My Bottle
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero" class="max-w-5xl mx-auto px-4 pt-20 pb-24 text-center fade-in">
+  <div class="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium px-3 py-1.5 rounded-full mb-6">
+    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+    6 quick questions
+  </div>
+  <h1 class="text-4xl sm:text-5xl font-bold text-stone-900 leading-tight mb-5 tracking-tight">
+    Find your perfect<br />water bottle.
+  </h1>
+  <p class="text-stone-500 text-lg max-w-md mx-auto mb-10 leading-relaxed">
+    Answer a few questions about how you drink, where you go, and what matters to you — we'll find the right bottle.
+  </p>
+  <button onclick="startQuiz()" class="btn-primary text-base font-semibold px-8 py-3.5 rounded-xl inline-flex items-center gap-2">
+    Start the Quiz
+    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+  </button>
+  <p class="text-stone-400 text-sm mt-4">Takes about 1 minute · No signup required</p>
+
+  <!-- Feature strips -->
+  <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto mt-16">
+    <div class="fade-in text-center p-4">
+      <div class="w-10 h-10 bg-stone-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="search" class="w-5 h-5 text-stone-600"></i>
+      </div>
+      <p class="text-sm text-stone-500 leading-snug">Personalized matches</p>
+    </div>
+    <div class="fade-in text-center p-4">
+      <div class="w-10 h-10 bg-stone-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="shield-check" class="w-5 h-5 text-stone-600"></i>
+      </div>
+      <p class="text-sm text-stone-500 leading-snug">Curated, trusted picks</p>
+    </div>
+    <div class="fade-in text-center p-4">
+      <div class="w-10 h-10 bg-stone-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-stone-600"></i>
+      </div>
+      <p class="text-sm text-stone-500 leading-snug">Direct purchase links</p>
+    </div>
+  </div>
+</section>
+
+<!-- WIZARD -->
+<section id="wizard-section" class="hidden bg-stone-50 border-t border-stone-100 py-16">
+  <div class="max-w-2xl mx-auto px-4">
+    <!-- Progress -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-medium text-stone-500" id="step-label">Step 1 of 6</span>
+        <button id="back-btn" onclick="prevStep()" class="text-sm text-stone-400 hover:text-stone-600 transition-colors hidden flex items-center gap-1">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
+        </button>
+      </div>
+      <div class="h-1.5 bg-stone-200 rounded-full overflow-hidden">
+        <div id="progress-bar" class="progress-bar h-full bg-amber-500 rounded-full" style="width:16.6%"></div>
+      </div>
+    </div>
+
+    <!-- Step Container -->
+    <div id="step-container"></div>
+
+    <!-- Next Button -->
+    <div class="mt-6 flex justify-end">
+      <button id="next-btn" onclick="nextStep()" disabled class="btn-primary px-6 py-2.5 rounded-xl font-medium flex items-center gap-2">
+        <span id="next-label">Next</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results-section" class="hidden py-16 border-t border-stone-100">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="text-center mb-10 fade-in">
+      <div class="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium px-3 py-1.5 rounded-full mb-4">
+        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+        Your matches are ready
+      </div>
+      <h2 class="text-3xl font-bold text-stone-900 mb-3 tracking-tight">Here are your best bottles</h2>
+      <p class="text-stone-500">Based on your answers — sorted by how well they match.</p>
+    </div>
+    <div id="results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"></div>
+    <div class="text-center">
+      <button onclick="resetQuiz()" class="inline-flex items-center gap-2 text-stone-500 hover:text-stone-700 text-sm font-medium transition-colors border border-stone-200 hover:border-stone-300 px-4 py-2 rounded-xl">
+        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+        Start Over
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-stone-100 py-10 mt-8">
+  <div class="max-w-5xl mx-auto px-4 text-center">
+    <div class="flex items-center justify-center gap-2 mb-3">
+      <i data-lucide="droplets" class="w-4 h-4 text-amber-600"></i>
+      <span class="font-medium text-stone-700">Bottle Finder</span>
+    </div>
+    <p class="text-stone-400 text-sm max-w-md mx-auto leading-relaxed">
+      Bottle Finder participates in affiliate programs including Amazon Associates. We earn a small commission when you purchase through our links, at no extra cost to you.
+    </p>
+    <div class="flex items-center justify-center gap-4 mt-4">
+      <a href="admin.html" class="text-stone-300 hover:text-stone-500 text-xs transition-colors">Admin</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────
+
+const QUESTIONS = [
+  {
+    id: 'use',
+    icon: 'map-pin',
+    question: 'Where will you use it most?',
+    options: [
+      { value: 'everyday', label: 'Everyday carry', icon: 'briefcase' },
+      { value: 'gym',      label: 'Gym & sports',   icon: 'dumbbell' },
+      { value: 'outdoor',  label: 'Hiking & outdoors', icon: 'mountain' },
+      { value: 'office',   label: 'Office & desk',  icon: 'monitor' },
+      { value: 'travel',   label: 'Travel',          icon: 'plane' },
+    ]
+  },
+  {
+    id: 'size',
+    icon: 'ruler',
+    question: 'How much do you typically drink?',
+    options: [
+      { value: 'small',  label: 'Small  (≤16 oz)',  icon: 'minus-circle' },
+      { value: 'medium', label: 'Medium (20–24 oz)', icon: 'circle' },
+      { value: 'large',  label: 'Large  (32 oz)',    icon: 'plus-circle' },
+      { value: 'xl',     label: 'XL     (40 oz+)',   icon: 'maximize-2' },
+    ]
+  },
+  {
+    id: 'temp',
+    icon: 'thermometer',
+    question: 'Temperature needs?',
+    options: [
+      { value: 'cold',  label: 'Keep drinks cold',   icon: 'snowflake' },
+      { value: 'hot',   label: 'Keep drinks hot',    icon: 'flame' },
+      { value: 'both',  label: 'Both hot & cold',    icon: 'repeat' },
+      { value: 'none',  label: 'No preference',      icon: 'minus' },
+    ]
+  },
+  {
+    id: 'material',
+    icon: 'layers',
+    question: 'Material preference?',
+    options: [
+      { value: 'steel',   label: 'Stainless steel', icon: 'zap' },
+      { value: 'plastic', label: 'BPA-free plastic', icon: 'droplet' },
+      { value: 'glass',   label: 'Glass',            icon: 'gem' },
+      { value: 'any',     label: 'No preference',    icon: 'check' },
+    ]
+  },
+  {
+    id: 'feature',
+    icon: 'star',
+    question: 'Must-have feature?',
+    options: [
+      { value: 'filter',    label: 'Built-in filter',  icon: 'filter' },
+      { value: 'straw',     label: 'Straw / spout lid', icon: 'git-branch' },
+      { value: 'wide',      label: 'Wide mouth',        icon: 'circle' },
+      { value: 'handle',    label: 'Carry handle',      icon: 'anchor' },
+      { value: 'light',     label: 'Lightweight',       icon: 'feather' },
+    ]
+  },
+  {
+    id: 'budget',
+    icon: 'dollar-sign',
+    question: 'What\'s your budget?',
+    options: [
+      { value: 'low',    label: 'Under $20', icon: 'tag' },
+      { value: 'mid',    label: '$20 – $40', icon: 'tag' },
+      { value: 'high',   label: '$40 – $60', icon: 'tag' },
+      { value: 'premium',label: '$60+',      icon: 'tag' },
+    ]
+  },
+];
+
+const BOTTLES = [
+  {
+    id: 'hydro-flask-32',
+    name: 'Hydro Flask 32oz Wide Mouth',
+    brand: 'Hydro Flask',
+    price: 50,
+    priceTier: 'high',
+    oz: 32, sizeTier: 'large',
+    material: 'steel',
+    insulated: true,
+    features: ['wide', 'handle'],
+    uses: ['outdoor', 'gym', 'everyday'],
+    tempTiers: ['cold', 'hot', 'both'],
+    highlight: ['Wide mouth', 'Double-wall insulated', 'Carry handle'],
+    color: '#94a3b8',
+    url: 'https://www.amazon.com/s?k=Hydro+Flask+32oz+Wide+Mouth&tag=bottlefinder-20',
+  },
+  {
+    id: 'stanley-quencher-40',
+    name: 'Stanley Quencher 40oz',
+    brand: 'Stanley',
+    price: 40,
+    priceTier: 'mid',
+    oz: 40, sizeTier: 'xl',
+    material: 'steel',
+    insulated: true,
+    features: ['straw', 'handle'],
+    uses: ['everyday', 'travel', 'office'],
+    tempTiers: ['cold', 'hot', 'both'],
+    highlight: ['Straw lid', 'Sturdy handle', '40oz capacity'],
+    color: '#6b7280',
+    url: 'https://www.amazon.com/s?k=Stanley+Quencher+40oz&tag=bottlefinder-20',
+  },
+  {
+    id: 'owala-freesip-32',
+    name: 'Owala FreeSip 32oz',
+    brand: 'Owala',
+    price: 35,
+    priceTier: 'mid',
+    oz: 32, sizeTier: 'large',
+    material: 'steel',
+    insulated: true,
+    features: ['straw', 'light'],
+    uses: ['everyday', 'gym'],
+    tempTiers: ['cold', 'both'],
+    highlight: ['Dual straw & sip opening', 'Leak-proof lid', 'Lightweight'],
+    color: '#7c3aed',
+    url: 'https://www.amazon.com/s?k=Owala+FreeSip+32oz&tag=bottlefinder-20',
+  },
+  {
+    id: 'yeti-rambler-36',
+    name: 'Yeti Rambler 36oz',
+    brand: 'Yeti',
+    price: 55,
+    priceTier: 'high',
+    oz: 36, sizeTier: 'large',
+    material: 'steel',
+    insulated: true,
+    features: ['wide', 'handle'],
+    uses: ['outdoor', 'gym', 'travel'],
+    tempTiers: ['cold', 'hot', 'both'],
+    highlight: ['18/8 stainless steel', 'Wide mouth', 'Rugged & durable'],
+    color: '#374151',
+    url: 'https://www.amazon.com/s?k=Yeti+Rambler+36oz&tag=bottlefinder-20',
+  },
+  {
+    id: 'nalgene-32',
+    name: 'Nalgene 32oz Wide Mouth',
+    brand: 'Nalgene',
+    price: 12,
+    priceTier: 'low',
+    oz: 32, sizeTier: 'large',
+    material: 'plastic',
+    insulated: false,
+    features: ['wide', 'light'],
+    uses: ['outdoor', 'gym', 'everyday'],
+    tempTiers: ['none'],
+    highlight: ['Ultra-lightweight', 'Wide mouth', 'Made in USA'],
+    color: '#2563eb',
+    url: 'https://www.amazon.com/s?k=Nalgene+32oz+Wide+Mouth&tag=bottlefinder-20',
+  },
+  {
+    id: 'camelbak-chute-25',
+    name: 'CamelBak Chute Mag 25oz',
+    brand: 'CamelBak',
+    price: 20,
+    priceTier: 'low',
+    oz: 25, sizeTier: 'medium',
+    material: 'plastic',
+    insulated: false,
+    features: ['light', 'wide'],
+    uses: ['gym', 'everyday', 'outdoor'],
+    tempTiers: ['cold', 'none'],
+    highlight: ['Magnetic lid', 'Lightweight', 'Ergonomic grip'],
+    color: '#059669',
+    url: 'https://www.amazon.com/s?k=CamelBak+Chute+Mag+25oz&tag=bottlefinder-20',
+  },
+  {
+    id: 'brita-36-filter',
+    name: 'Brita 36oz Filter Bottle',
+    brand: 'Brita',
+    price: 25,
+    priceTier: 'mid',
+    oz: 36, sizeTier: 'large',
+    material: 'plastic',
+    insulated: false,
+    features: ['filter', 'straw'],
+    uses: ['everyday', 'office', 'travel'],
+    tempTiers: ['cold', 'none'],
+    highlight: ['Built-in filter', 'Straw lid', 'Replaces 1,800 plastic bottles/yr'],
+    color: '#0284c7',
+    url: 'https://www.amazon.com/s?k=Brita+36oz+Filter+Bottle&tag=bottlefinder-20',
+  },
+  {
+    id: 'lifestraw-go-22',
+    name: 'LifeStraw Go 22oz',
+    brand: 'LifeStraw',
+    price: 45,
+    priceTier: 'high',
+    oz: 22, sizeTier: 'medium',
+    material: 'plastic',
+    insulated: false,
+    features: ['filter', 'straw'],
+    uses: ['outdoor', 'travel'],
+    tempTiers: ['cold', 'none'],
+    highlight: ['2-stage filtration', 'Removes bacteria & parasites', 'Ideal for travel & hiking'],
+    color: '#16a34a',
+    url: 'https://www.amazon.com/s?k=LifeStraw+Go+22oz&tag=bottlefinder-20',
+  },
+  {
+    id: 'contigo-autoseal-24',
+    name: 'Contigo Autoseal 24oz',
+    brand: 'Contigo',
+    price: 18,
+    priceTier: 'low',
+    oz: 24, sizeTier: 'medium',
+    material: 'plastic',
+    insulated: true,
+    features: ['straw', 'light'],
+    uses: ['office', 'everyday'],
+    tempTiers: ['cold', 'hot', 'both'],
+    highlight: ['Autoseal lid', 'Spill-proof', 'One-handed drinking'],
+    color: '#dc2626',
+    url: 'https://www.amazon.com/s?k=Contigo+Autoseal+24oz&tag=bottlefinder-20',
+  },
+  {
+    id: 'klean-kanteen-27',
+    name: 'Klean Kanteen 27oz',
+    brand: 'Klean Kanteen',
+    price: 30,
+    priceTier: 'mid',
+    oz: 27, sizeTier: 'medium',
+    material: 'steel',
+    insulated: true,
+    features: ['light', 'wide'],
+    uses: ['everyday', 'outdoor'],
+    tempTiers: ['cold', 'hot', 'both'],
+    highlight: ['Climate Neutral certified', 'Insulated', 'Eco-focused brand'],
+    color: '#ca8a04',
+    url: 'https://www.amazon.com/s?k=Klean+Kanteen+27oz&tag=bottlefinder-20',
+  },
+  {
+    id: 'swell-25',
+    name: "S'well 25oz",
+    brand: "S'well",
+    price: 45,
+    priceTier: 'high',
+    oz: 25, sizeTier: 'medium',
+    material: 'steel',
+    insulated: true,
+    features: ['light'],
+    uses: ['office', 'travel', 'everyday'],
+    tempTiers: ['cold', 'hot', 'both'],
+    highlight: ['Sleek slim design', 'Triple-wall insulated', '24hr cold / 12hr hot'],
+    color: '#7c3aed',
+    url: 'https://www.amazon.com/s?k=Swell+25oz+Bottle&tag=bottlefinder-20',
+  },
+  {
+    id: 'takeya-actives-32',
+    name: 'Takeya Actives 32oz',
+    brand: 'Takeya',
+    price: 35,
+    priceTier: 'mid',
+    oz: 32, sizeTier: 'large',
+    material: 'steel',
+    insulated: true,
+    features: ['straw', 'handle'],
+    uses: ['gym', 'outdoor', 'everyday'],
+    tempTiers: ['cold', 'both'],
+    highlight: ['Spout lid', 'Carry handle', 'Insulated 24hr cold'],
+    color: '#0f766e',
+    url: 'https://www.amazon.com/s?k=Takeya+Actives+32oz&tag=bottlefinder-20',
+  },
+];
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let currentStep = 0;
+let answers = {};
+let direction = 'forward';
+
+// ─── ANALYTICS ─────────────────────────────────────────────────────────────
+function trackEvent(type, data = {}) {
+  const events = JSON.parse(localStorage.getItem('bf_events') || '[]');
+  events.push({ type, data, ts: Date.now() });
+  localStorage.setItem('bf_events', JSON.stringify(events));
+}
+
+// ─── QUIZ LOGIC ────────────────────────────────────────────────────────────
+function startQuiz() {
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('wizard-section').classList.remove('hidden');
+  document.getElementById('wizard-section').scrollIntoView({ behavior: 'smooth' });
+  currentStep = 0;
+  answers = {};
+  renderStep();
+  trackEvent('wizard_start');
+}
+
+function renderStep() {
+  const q = QUESTIONS[currentStep];
+  const total = QUESTIONS.length;
+  const pct = ((currentStep + 1) / total) * 100;
+
+  document.getElementById('step-label').textContent = `Step ${currentStep + 1} of ${total}`;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('back-btn').classList.toggle('hidden', currentStep === 0);
+
+  const isLast = currentStep === total - 1;
+  document.getElementById('next-label').textContent = isLast ? 'See My Matches' : 'Next';
+  document.getElementById('next-btn').disabled = !answers[q.id];
+
+  const container = document.getElementById('step-container');
+  container.innerHTML = `
+    <div class="step-slide">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+          <i data-lucide="${q.icon}" class="w-4 h-4 text-amber-600"></i>
+        </div>
+      </div>
+      <h2 class="text-xl font-bold text-stone-900 mb-6">${q.question}</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        ${q.options.map(opt => `
+          <button
+            class="option-tile flex items-center gap-3 border-2 border-stone-200 rounded-xl p-4 text-left bg-white ${answers[q.id] === opt.value ? 'selected' : ''}"
+            onclick="selectOption('${q.id}', '${opt.value}', this)"
+          >
+            <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="${opt.icon}" class="w-4 h-4 text-stone-600"></i>
+            </div>
+            <span class="font-medium text-stone-800 text-sm">${opt.label}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function selectOption(qId, value, el) {
+  answers[qId] = value;
+  document.querySelectorAll('.option-tile').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('next-btn').disabled = false;
+}
+
+function nextStep() {
+  if (!answers[QUESTIONS[currentStep].id]) return;
+  direction = 'forward';
+  if (currentStep < QUESTIONS.length - 1) {
+    currentStep++;
+    renderStep();
+  } else {
+    showResults();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    direction = 'back';
+    currentStep--;
+    renderStep();
+  }
+}
+
+function resetQuiz() {
+  answers = {};
+  currentStep = 0;
+  document.getElementById('results-section').classList.add('hidden');
+  document.getElementById('hero').style.display = '';
+  document.getElementById('wizard-section').classList.add('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── SCORING ───────────────────────────────────────────────────────────────
+function scoreBottles() {
+  return BOTTLES.map(b => {
+    let score = 0;
+    const a = answers;
+
+    // Use match
+    if (a.use && b.uses.includes(a.use)) score += 30;
+
+    // Size match
+    const sizeMap = { small: ['small'], medium: ['small','medium'], large: ['medium','large'], xl: ['large','xl'] };
+    if (a.size && sizeMap[a.size]?.includes(b.sizeTier)) score += 20;
+
+    // Temp match
+    if (a.temp) {
+      if (a.temp === 'none') score += 10;
+      else if (a.temp === 'both' && b.insulated) score += 20;
+      else if (b.tempTiers.includes(a.temp)) score += 20;
+    }
+
+    // Material match
+    if (a.material) {
+      if (a.material === 'any') score += 10;
+      else if (b.material === a.material) score += 20;
+    }
+
+    // Feature match
+    if (a.feature && b.features.includes(a.feature)) score += 25;
+
+    // Budget match
+    if (a.budget && b.priceTier === a.budget) score += 20;
+    // Adjacent budget tiers — partial credit
+    const tiers = ['low','mid','high','premium'];
+    if (a.budget) {
+      const diff = Math.abs(tiers.indexOf(a.budget) - tiers.indexOf(b.priceTier));
+      if (diff === 1) score += 8;
+    }
+
+    return { ...b, score };
+  }).sort((a, b) => b.score - a.score);
+}
+
+// ─── RESULTS ───────────────────────────────────────────────────────────────
+function showResults() {
+  trackEvent('wizard_complete', { answers });
+  document.getElementById('wizard-section').classList.add('hidden');
+  document.getElementById('results-section').classList.remove('hidden');
+
+  const ranked = scoreBottles();
+  const grid = document.getElementById('results-grid');
+  grid.innerHTML = '';
+
+  ranked.forEach((b, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card-hover bg-white border border-stone-200 rounded-2xl overflow-hidden fade-in';
+    card.style.transitionDelay = (idx * 0.05) + 's';
+
+    const matchPct = Math.min(99, Math.round((b.score / 125) * 100));
+
+    card.innerHTML = `
+      <div class="bottle-img-wrap h-44 flex items-center justify-center relative">
+        ${idx === 0 ? '<div class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">Best Match</div>' : ''}
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style="background:${b.color}22">
+            <i data-lucide="droplets" class="w-8 h-8" style="color:${b.color}"></i>
+          </div>
+          <span class="text-xs text-stone-400 font-medium">${b.oz} oz · ${b.material === 'steel' ? 'Stainless' : b.material === 'plastic' ? 'BPA-free plastic' : 'Glass'}</span>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="flex items-start justify-between gap-2 mb-1">
+          <div>
+            <p class="text-xs text-stone-400 font-medium mb-0.5">${b.brand}</p>
+            <h3 class="font-semibold text-stone-900 text-sm leading-snug">${b.name}</h3>
+          </div>
+          <span class="text-sm font-bold text-stone-900 flex-shrink-0">$${b.price}</span>
+        </div>
+        <div class="mt-3 mb-4 flex flex-wrap gap-1.5">
+          ${b.highlight.map(h => `<span class="text-xs text-stone-500 bg-stone-100 px-2 py-0.5 rounded-lg">${h}</span>`).join('')}
+        </div>
+        <a
+          href="${b.url}"
+          target="_blank"
+          rel="noopener"
+          onclick="trackBottleClick('${b.id}', '${b.name}')"
+          class="w-full btn-primary text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2"
+        >
+          <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+          Buy on Amazon
+        </a>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  lucide.createIcons();
+
+  // Animate in
+  setTimeout(() => {
+    document.querySelectorAll('#results-grid .fade-in').forEach(el => el.classList.add('visible'));
+  }, 50);
+
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function trackBottleClick(id, name) {
+  trackEvent('bottle_click', { id, name });
+}
+
+// ─── SCROLL ANIMATIONS ─────────────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  trackEvent('page_view');
+});
+</script>
+</body>
+</html>
