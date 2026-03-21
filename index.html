@@ -643,11 +643,18 @@ function trackBottleClick(id, name) {
 // ─── SCROLL ANIMATIONS ─────────────────────────────────────────────────────
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
+}, { threshold: 0.05 });
 
 document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  // Immediately show anything already in viewport (hero section)
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+  }, 50);
   trackEvent('page_view');
 });
 </script>
