@@ -27,9 +27,7 @@
     .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
     .step-slide { animation: slideIn 0.3s ease forwards; }
-    .step-slide-back { animation: slideInBack 0.3s ease forwards; }
     @keyframes slideIn { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes slideInBack { from { opacity: 0; transform: translateX(-32px); } to { opacity: 1; transform: translateX(0); } }
     .option-tile { transition: border-color 0.15s, background-color 0.15s, transform 0.15s; }
     .option-tile:hover { transform: translateY(-1px); }
     .option-tile.selected { border-color: #d97706; background-color: #fffbeb; }
@@ -40,6 +38,7 @@
     .card-hover:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
     .progress-bar { transition: width 0.4s ease; }
     .bottle-img-wrap { background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%); }
+    .check-box { transition: background-color 0.15s, border-color 0.15s; }
   </style>
 </head>
 <body class="bg-white text-stone-800 antialiased">
@@ -61,7 +60,7 @@
 <section id="hero" class="max-w-5xl mx-auto px-4 pt-20 pb-24 text-center fade-in">
   <div class="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium px-3 py-1.5 rounded-full mb-6">
     <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-    6 quick questions
+    7 quick questions
   </div>
   <h1 class="text-4xl sm:text-5xl font-bold text-stone-900 leading-tight mb-5 tracking-tight">
     Find your perfect<br />water bottle.
@@ -75,7 +74,6 @@
   </button>
   <p class="text-stone-400 text-sm mt-4">Takes about 1 minute · No signup required</p>
 
-  <!-- Feature strips -->
   <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto mt-16">
     <div class="fade-in text-center p-4">
       <div class="w-10 h-10 bg-stone-100 rounded-xl flex items-center justify-center mx-auto mb-3">
@@ -101,28 +99,30 @@
 <!-- WIZARD -->
 <section id="wizard-section" class="hidden bg-stone-50 border-t border-stone-100 py-16">
   <div class="max-w-2xl mx-auto px-4">
-    <!-- Progress -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-sm font-medium text-stone-500" id="step-label">Step 1 of 6</span>
+        <span class="text-sm font-medium text-stone-500" id="step-label">Step 1 of 7</span>
         <button id="back-btn" onclick="prevStep()" class="text-sm text-stone-400 hover:text-stone-600 transition-colors hidden flex items-center gap-1">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
         </button>
       </div>
       <div class="h-1.5 bg-stone-200 rounded-full overflow-hidden">
-        <div id="progress-bar" class="progress-bar h-full bg-amber-500 rounded-full" style="width:16.6%"></div>
+        <div id="progress-bar" class="progress-bar h-full bg-amber-500 rounded-full" style="width:14.2%"></div>
       </div>
     </div>
 
-    <!-- Step Container -->
     <div id="step-container"></div>
 
-    <!-- Next Button -->
-    <div class="mt-6 flex justify-end">
-      <button id="next-btn" onclick="nextStep()" disabled class="btn-primary px-6 py-2.5 rounded-xl font-medium flex items-center gap-2">
-        <span id="next-label">Next</span>
-        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-      </button>
+    <div class="mt-6 flex items-center justify-between">
+      <div id="skip-hint" class="hidden text-sm text-stone-400">
+        No strong preference? Just click Next.
+      </div>
+      <div class="ml-auto">
+        <button id="next-btn" onclick="nextStep()" disabled class="btn-primary px-6 py-2.5 rounded-xl font-medium flex items-center gap-2">
+          <span id="next-label">Next</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -130,14 +130,16 @@
 <!-- RESULTS -->
 <section id="results-section" class="hidden py-16 border-t border-stone-100">
   <div class="max-w-5xl mx-auto px-4">
-    <div class="text-center mb-10 fade-in">
+    <div class="text-center mb-8 fade-in">
       <div class="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium px-3 py-1.5 rounded-full mb-4">
         <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
         Your matches are ready
       </div>
       <h2 class="text-3xl font-bold text-stone-900 mb-3 tracking-tight">Here are your best bottles</h2>
-      <p class="text-stone-500">Based on your answers — sorted by how well they match.</p>
+      <p class="text-stone-500">Based on your answers — use the controls below to sort and adjust the view.</p>
     </div>
+    <!-- Sort + unit controls injected here -->
+    <div id="results-controls"></div>
     <div id="results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"></div>
     <div class="text-center">
       <button onclick="resetQuiz()" class="inline-flex items-center gap-2 text-stone-500 hover:text-stone-700 text-sm font-medium transition-colors border border-stone-200 hover:border-stone-300 px-4 py-2 rounded-xl">
@@ -165,30 +167,44 @@
 </footer>
 
 <script>
-// ─── DATA ──────────────────────────────────────────────────────────────────
+// ─── AVOID PENALTY MAP ────────────────────────────────────────────────────
+const AVOID_CHECKS = {
+  straw:     b => b.features.includes('straw'),
+  handle:    b => b.features.includes('handle'),
+  wide:      b => b.features.includes('wide'),
+  filter:    b => b.features.includes('filter'),
+  plastic:   b => b.material === 'plastic',
+  glass:     b => b.material === 'glass',
+  insulated: b => b.insulated,
+  bulky:     b => b.sizeTier === 'xl',
+};
 
+// ─── QUESTIONS ─────────────────────────────────────────────────────────────
 const QUESTIONS = [
   {
     id: 'use',
     icon: 'map-pin',
     question: 'Where will you use it most?',
+    hint: 'Select all that apply',
+    multiSelect: true,
     options: [
-      { value: 'everyday', label: 'Everyday carry', icon: 'briefcase' },
-      { value: 'gym',      label: 'Gym & sports',   icon: 'dumbbell' },
+      { value: 'everyday', label: 'Everyday carry',    icon: 'briefcase' },
+      { value: 'gym',      label: 'Gym & sports',      icon: 'dumbbell' },
       { value: 'outdoor',  label: 'Hiking & outdoors', icon: 'mountain' },
-      { value: 'office',   label: 'Office & desk',  icon: 'monitor' },
-      { value: 'travel',   label: 'Travel',          icon: 'plane' },
+      { value: 'office',   label: 'Office & desk',     icon: 'monitor' },
+      { value: 'travel',   label: 'Travel',             icon: 'plane' },
     ]
   },
   {
     id: 'size',
     icon: 'ruler',
     question: 'How much do you typically drink?',
+    showUnit: true,
     options: [
-      { value: 'small',  label: 'Small  (≤16 oz)',  icon: 'minus-circle' },
-      { value: 'medium', label: 'Medium (20–24 oz)', icon: 'circle' },
-      { value: 'large',  label: 'Large  (32 oz)',    icon: 'plus-circle' },
-      { value: 'xl',     label: 'XL     (40 oz+)',   icon: 'maximize-2' },
+      { value: 'small',  labelOz: 'Small  (≤ 16 oz)',   labelMl: 'Small  (≤ 473 ml)',    icon: 'minus-circle' },
+      { value: 'medium', labelOz: 'Medium (20 – 24 oz)', labelMl: 'Medium (591 – 710 ml)', icon: 'circle' },
+      { value: 'large',  labelOz: 'Large  (32 oz)',      labelMl: 'Large  (946 ml)',        icon: 'plus-circle' },
+      { value: 'xl',     labelOz: 'XL     (40 oz+)',     labelMl: 'XL     (1183+ ml)',      icon: 'maximize-2' },
     ]
   },
   {
@@ -196,10 +212,10 @@ const QUESTIONS = [
     icon: 'thermometer',
     question: 'Temperature needs?',
     options: [
-      { value: 'cold',  label: 'Keep drinks cold',   icon: 'snowflake' },
-      { value: 'hot',   label: 'Keep drinks hot',    icon: 'flame' },
-      { value: 'both',  label: 'Both hot & cold',    icon: 'repeat' },
-      { value: 'none',  label: 'No preference',      icon: 'minus' },
+      { value: 'cold', label: 'Keep drinks cold', icon: 'snowflake' },
+      { value: 'hot',  label: 'Keep drinks hot',  icon: 'flame' },
+      { value: 'both', label: 'Both hot & cold',  icon: 'repeat' },
+      { value: 'none', label: 'No preference',    icon: 'minus' },
     ]
   },
   {
@@ -207,47 +223,66 @@ const QUESTIONS = [
     icon: 'layers',
     question: 'Material preference?',
     options: [
-      { value: 'steel',   label: 'Stainless steel', icon: 'zap' },
+      { value: 'steel',   label: 'Stainless steel',  icon: 'zap' },
       { value: 'plastic', label: 'BPA-free plastic', icon: 'droplet' },
-      { value: 'glass',   label: 'Glass',            icon: 'gem' },
-      { value: 'any',     label: 'No preference',    icon: 'check' },
+      { value: 'glass',   label: 'Glass',             icon: 'gem' },
+      { value: 'any',     label: 'No preference',     icon: 'check' },
     ]
   },
   {
-    id: 'feature',
+    id: 'features',
     icon: 'star',
-    question: 'Must-have feature?',
+    question: 'Must-have features?',
+    hint: 'Select all that matter to you',
+    multiSelect: true,
     options: [
-      { value: 'filter',    label: 'Built-in filter',  icon: 'filter' },
-      { value: 'straw',     label: 'Straw / spout lid', icon: 'git-branch' },
-      { value: 'wide',      label: 'Wide mouth',        icon: 'circle' },
-      { value: 'handle',    label: 'Carry handle',      icon: 'anchor' },
-      { value: 'light',     label: 'Lightweight',       icon: 'feather' },
+      { value: 'filter', label: 'Built-in filter',   icon: 'filter' },
+      { value: 'straw',  label: 'Straw / spout lid', icon: 'git-branch' },
+      { value: 'wide',   label: 'Wide mouth',         icon: 'circle' },
+      { value: 'handle', label: 'Carry handle',       icon: 'anchor' },
+      { value: 'light',  label: 'Lightweight',        icon: 'feather' },
+    ]
+  },
+  {
+    id: 'avoid',
+    icon: 'x-circle',
+    question: "Anything you'd rather not have?",
+    hint: 'Optional — skip if you have no strong preferences',
+    multiSelect: true,
+    optional: true,
+    options: [
+      { value: 'straw',     label: 'Straw or spout lid',  icon: 'git-branch' },
+      { value: 'handle',    label: 'Carry handle',         icon: 'anchor' },
+      { value: 'wide',      label: 'Wide mouth opening',   icon: 'circle' },
+      { value: 'filter',    label: 'Built-in filter',      icon: 'filter' },
+      { value: 'plastic',   label: 'Plastic material',     icon: 'droplet' },
+      { value: 'glass',     label: 'Glass material',       icon: 'gem' },
+      { value: 'insulated', label: 'Insulated / heavy',    icon: 'thermometer' },
+      { value: 'bulky',     label: 'Extra large size',     icon: 'maximize-2' },
     ]
   },
   {
     id: 'budget',
     icon: 'dollar-sign',
-    question: 'What\'s your budget?',
+    question: "What's your budget?",
     options: [
-      { value: 'low',    label: 'Under $20', icon: 'tag' },
-      { value: 'mid',    label: '$20 – $40', icon: 'tag' },
-      { value: 'high',   label: '$40 – $60', icon: 'tag' },
-      { value: 'premium',label: '$60+',      icon: 'tag' },
+      { value: 'low',     label: 'Under $20', icon: 'tag' },
+      { value: 'mid',     label: '$20 – $40', icon: 'tag' },
+      { value: 'high',    label: '$40 – $60', icon: 'tag' },
+      { value: 'premium', label: '$60+',      icon: 'tag' },
     ]
   },
 ];
 
+// ─── BOTTLES ───────────────────────────────────────────────────────────────
 const BOTTLES = [
   {
     id: 'hydro-flask-32',
     name: 'Hydro Flask 32oz Wide Mouth',
     brand: 'Hydro Flask',
-    price: 50,
-    priceTier: 'high',
+    price: 50, priceTier: 'high',
     oz: 32, sizeTier: 'large',
-    material: 'steel',
-    insulated: true,
+    material: 'steel', insulated: true,
     features: ['wide', 'handle'],
     uses: ['outdoor', 'gym', 'everyday'],
     tempTiers: ['cold', 'hot', 'both'],
@@ -259,11 +294,9 @@ const BOTTLES = [
     id: 'stanley-quencher-40',
     name: 'Stanley Quencher 40oz',
     brand: 'Stanley',
-    price: 40,
-    priceTier: 'mid',
+    price: 40, priceTier: 'mid',
     oz: 40, sizeTier: 'xl',
-    material: 'steel',
-    insulated: true,
+    material: 'steel', insulated: true,
     features: ['straw', 'handle'],
     uses: ['everyday', 'travel', 'office'],
     tempTiers: ['cold', 'hot', 'both'],
@@ -275,11 +308,9 @@ const BOTTLES = [
     id: 'owala-freesip-32',
     name: 'Owala FreeSip 32oz',
     brand: 'Owala',
-    price: 35,
-    priceTier: 'mid',
+    price: 35, priceTier: 'mid',
     oz: 32, sizeTier: 'large',
-    material: 'steel',
-    insulated: true,
+    material: 'steel', insulated: true,
     features: ['straw', 'light'],
     uses: ['everyday', 'gym'],
     tempTiers: ['cold', 'both'],
@@ -291,11 +322,9 @@ const BOTTLES = [
     id: 'yeti-rambler-36',
     name: 'Yeti Rambler 36oz',
     brand: 'Yeti',
-    price: 55,
-    priceTier: 'high',
+    price: 55, priceTier: 'high',
     oz: 36, sizeTier: 'large',
-    material: 'steel',
-    insulated: true,
+    material: 'steel', insulated: true,
     features: ['wide', 'handle'],
     uses: ['outdoor', 'gym', 'travel'],
     tempTiers: ['cold', 'hot', 'both'],
@@ -307,11 +336,9 @@ const BOTTLES = [
     id: 'nalgene-32',
     name: 'Nalgene 32oz Wide Mouth',
     brand: 'Nalgene',
-    price: 12,
-    priceTier: 'low',
+    price: 12, priceTier: 'low',
     oz: 32, sizeTier: 'large',
-    material: 'plastic',
-    insulated: false,
+    material: 'plastic', insulated: false,
     features: ['wide', 'light'],
     uses: ['outdoor', 'gym', 'everyday'],
     tempTiers: ['none'],
@@ -323,11 +350,9 @@ const BOTTLES = [
     id: 'camelbak-chute-25',
     name: 'CamelBak Chute Mag 25oz',
     brand: 'CamelBak',
-    price: 20,
-    priceTier: 'low',
+    price: 20, priceTier: 'low',
     oz: 25, sizeTier: 'medium',
-    material: 'plastic',
-    insulated: false,
+    material: 'plastic', insulated: false,
     features: ['light', 'wide'],
     uses: ['gym', 'everyday', 'outdoor'],
     tempTiers: ['cold', 'none'],
@@ -339,11 +364,9 @@ const BOTTLES = [
     id: 'brita-36-filter',
     name: 'Brita 36oz Filter Bottle',
     brand: 'Brita',
-    price: 25,
-    priceTier: 'mid',
+    price: 25, priceTier: 'mid',
     oz: 36, sizeTier: 'large',
-    material: 'plastic',
-    insulated: false,
+    material: 'plastic', insulated: false,
     features: ['filter', 'straw'],
     uses: ['everyday', 'office', 'travel'],
     tempTiers: ['cold', 'none'],
@@ -355,15 +378,13 @@ const BOTTLES = [
     id: 'lifestraw-go-22',
     name: 'LifeStraw Go 22oz',
     brand: 'LifeStraw',
-    price: 45,
-    priceTier: 'high',
+    price: 45, priceTier: 'high',
     oz: 22, sizeTier: 'medium',
-    material: 'plastic',
-    insulated: false,
+    material: 'plastic', insulated: false,
     features: ['filter', 'straw'],
     uses: ['outdoor', 'travel'],
     tempTiers: ['cold', 'none'],
-    highlight: ['2-stage filtration', 'Removes bacteria & parasites', 'Ideal for travel & hiking'],
+    highlight: ['2-stage filtration', 'Removes bacteria & parasites', 'Travel & hiking'],
     color: '#16a34a',
     url: 'https://www.amazon.com/s?k=LifeStraw+Go+22oz&tag=bottlefinder-20',
   },
@@ -371,11 +392,9 @@ const BOTTLES = [
     id: 'contigo-autoseal-24',
     name: 'Contigo Autoseal 24oz',
     brand: 'Contigo',
-    price: 18,
-    priceTier: 'low',
+    price: 18, priceTier: 'low',
     oz: 24, sizeTier: 'medium',
-    material: 'plastic',
-    insulated: true,
+    material: 'plastic', insulated: true,
     features: ['straw', 'light'],
     uses: ['office', 'everyday'],
     tempTiers: ['cold', 'hot', 'both'],
@@ -387,11 +406,9 @@ const BOTTLES = [
     id: 'klean-kanteen-27',
     name: 'Klean Kanteen 27oz',
     brand: 'Klean Kanteen',
-    price: 30,
-    priceTier: 'mid',
+    price: 30, priceTier: 'mid',
     oz: 27, sizeTier: 'medium',
-    material: 'steel',
-    insulated: true,
+    material: 'steel', insulated: true,
     features: ['light', 'wide'],
     uses: ['everyday', 'outdoor'],
     tempTiers: ['cold', 'hot', 'both'],
@@ -403,11 +420,9 @@ const BOTTLES = [
     id: 'swell-25',
     name: "S'well 25oz",
     brand: "S'well",
-    price: 45,
-    priceTier: 'high',
+    price: 45, priceTier: 'high',
     oz: 25, sizeTier: 'medium',
-    material: 'steel',
-    insulated: true,
+    material: 'steel', insulated: true,
     features: ['light'],
     uses: ['office', 'travel', 'everyday'],
     tempTiers: ['cold', 'hot', 'both'],
@@ -419,11 +434,9 @@ const BOTTLES = [
     id: 'takeya-actives-32',
     name: 'Takeya Actives 32oz',
     brand: 'Takeya',
-    price: 35,
-    priceTier: 'mid',
+    price: 35, priceTier: 'mid',
     oz: 32, sizeTier: 'large',
-    material: 'steel',
-    insulated: true,
+    material: 'steel', insulated: true,
     features: ['straw', 'handle'],
     uses: ['gym', 'outdoor', 'everyday'],
     tempTiers: ['cold', 'both'],
@@ -436,7 +449,9 @@ const BOTTLES = [
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let currentStep = 0;
 let answers = {};
-let direction = 'forward';
+let sortMode = 'relevance';
+let showMl = false;
+let scoredBottles = [];
 
 // ─── ANALYTICS ─────────────────────────────────────────────────────────────
 function trackEvent(type, data = {}) {
@@ -445,7 +460,7 @@ function trackEvent(type, data = {}) {
   localStorage.setItem('bf_events', JSON.stringify(events));
 }
 
-// ─── QUIZ LOGIC ────────────────────────────────────────────────────────────
+// ─── QUIZ ──────────────────────────────────────────────────────────────────
 function startQuiz() {
   document.getElementById('hero').style.display = 'none';
   document.getElementById('wizard-section').classList.remove('hidden');
@@ -454,6 +469,16 @@ function startQuiz() {
   answers = {};
   renderStep();
   trackEvent('wizard_start');
+}
+
+function isOptionSelected(q, value) {
+  if (q.multiSelect) return (answers[q.id] || []).includes(value);
+  return answers[q.id] === value;
+}
+
+function getLabel(q, opt) {
+  if (q.showUnit) return showMl ? opt.labelMl : opt.labelOz;
+  return opt.label;
 }
 
 function renderStep() {
@@ -467,45 +492,109 @@ function renderStep() {
 
   const isLast = currentStep === total - 1;
   document.getElementById('next-label').textContent = isLast ? 'See My Matches' : 'Next';
-  document.getElementById('next-btn').disabled = !answers[q.id];
 
-  const container = document.getElementById('step-container');
-  container.innerHTML = `
+  // Next button enablement
+  const hasAnswer = q.optional
+    ? true
+    : q.multiSelect
+      ? (answers[q.id] || []).length > 0
+      : !!answers[q.id];
+  document.getElementById('next-btn').disabled = !hasAnswer;
+
+  // Skip hint for optional steps
+  document.getElementById('skip-hint').classList.toggle('hidden', !q.optional);
+
+  // Unit toggle (size question only)
+  const unitHtml = q.showUnit ? `
+    <button onclick="toggleUnit()" class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 border border-stone-200 rounded-lg hover:border-amber-400 text-stone-500 transition mb-4">
+      <i data-lucide="arrow-left-right" class="w-3 h-3"></i>
+      ${showMl ? 'Switch to oz' : 'Switch to ml'}
+    </button>
+  ` : '';
+
+  const hintHtml = q.hint ? `<p class="text-sm text-stone-400 -mt-3 mb-4">${q.hint}</p>` : '';
+
+  const optionsHtml = q.options.map(opt => {
+    const selected = isOptionSelected(q, opt.value);
+    const label = getLabel(q, opt);
+    const handler = q.multiSelect
+      ? `selectMulti('${q.id}', '${opt.value}', this, ${!!q.optional})`
+      : `selectSingle('${q.id}', '${opt.value}', this)`;
+
+    const checkHtml = q.multiSelect ? `
+      <div data-checkbox class="check-box w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${selected ? 'border-amber-500 bg-amber-500' : 'border-stone-300'}">
+        ${selected ? '<svg viewBox="0 0 24 24" class="w-3 h-3 fill-none stroke-white stroke-[3]"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+      </div>` : '';
+
+    return `
+      <button
+        class="option-tile flex items-center gap-3 border-2 border-stone-200 rounded-xl p-4 text-left bg-white ${selected ? 'selected' : ''}"
+        onclick="${handler}"
+        data-value="${opt.value}"
+      >
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="${opt.icon}" class="w-4 h-4 text-stone-600"></i>
+        </div>
+        <span class="font-medium text-stone-800 text-sm flex-1">${label}</span>
+        ${checkHtml}
+      </button>`;
+  }).join('');
+
+  document.getElementById('step-container').innerHTML = `
     <div class="step-slide">
       <div class="flex items-center gap-2 mb-2">
         <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
           <i data-lucide="${q.icon}" class="w-4 h-4 text-amber-600"></i>
         </div>
+        ${q.optional ? '<span class="text-xs font-medium text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">Optional</span>' : ''}
       </div>
-      <h2 class="text-xl font-bold text-stone-900 mb-6">${q.question}</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        ${q.options.map(opt => `
-          <button
-            class="option-tile flex items-center gap-3 border-2 border-stone-200 rounded-xl p-4 text-left bg-white ${answers[q.id] === opt.value ? 'selected' : ''}"
-            onclick="selectOption('${q.id}', '${opt.value}', this)"
-          >
-            <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center flex-shrink-0">
-              <i data-lucide="${opt.icon}" class="w-4 h-4 text-stone-600"></i>
-            </div>
-            <span class="font-medium text-stone-800 text-sm">${opt.label}</span>
-          </button>
-        `).join('')}
-      </div>
+      <h2 class="text-xl font-bold text-stone-900 mb-3">${q.question}</h2>
+      ${hintHtml}
+      ${unitHtml}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">${optionsHtml}</div>
     </div>
   `;
   lucide.createIcons();
 }
 
-function selectOption(qId, value, el) {
+function selectSingle(qId, value, el) {
   answers[qId] = value;
   document.querySelectorAll('.option-tile').forEach(t => t.classList.remove('selected'));
   el.classList.add('selected');
   document.getElementById('next-btn').disabled = false;
 }
 
+function selectMulti(qId, value, el, optional) {
+  if (!answers[qId]) answers[qId] = [];
+  const idx = answers[qId].indexOf(value);
+  const nowSelected = idx === -1;
+  if (nowSelected) answers[qId].push(value);
+  else answers[qId].splice(idx, 1);
+
+  el.classList.toggle('selected', nowSelected);
+
+  const cb = el.querySelector('[data-checkbox]');
+  if (cb) {
+    cb.className = `check-box w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${nowSelected ? 'border-amber-500 bg-amber-500' : 'border-stone-300'}`;
+    cb.innerHTML = nowSelected
+      ? '<svg viewBox="0 0 24 24" class="w-3 h-3 fill-none stroke-white stroke-[3]"><polyline points="20 6 9 17 4 12"/></svg>'
+      : '';
+  }
+
+  if (!optional) {
+    document.getElementById('next-btn').disabled = answers[qId].length === 0;
+  }
+}
+
+function toggleUnit() {
+  showMl = !showMl;
+  renderStep();
+}
+
 function nextStep() {
-  if (!answers[QUESTIONS[currentStep].id]) return;
-  direction = 'forward';
+  const q = QUESTIONS[currentStep];
+  const hasAnswer = q.optional ? true : (q.multiSelect ? (answers[q.id] || []).length > 0 : !!answers[q.id]);
+  if (!hasAnswer) return;
   if (currentStep < QUESTIONS.length - 1) {
     currentStep++;
     renderStep();
@@ -516,7 +605,6 @@ function nextStep() {
 
 function prevStep() {
   if (currentStep > 0) {
-    direction = 'back';
     currentStep--;
     renderStep();
   }
@@ -525,6 +613,7 @@ function prevStep() {
 function resetQuiz() {
   answers = {};
   currentStep = 0;
+  sortMode = 'relevance';
   document.getElementById('results-section').classList.add('hidden');
   document.getElementById('hero').style.display = '';
   document.getElementById('wizard-section').classList.add('hidden');
@@ -537,40 +626,83 @@ function scoreBottles() {
     let score = 0;
     const a = answers;
 
-    // Use match
-    if (a.use && b.uses.includes(a.use)) score += 30;
+    // Use (multi-select) — up to 36pts
+    const useList = Array.isArray(a.use) ? a.use : [];
+    const useMatches = useList.filter(u => b.uses.includes(u)).length;
+    if (useMatches > 0) score += Math.min(useMatches, 2) * 18;
 
-    // Size match
+    // Size — 20pts
     const sizeMap = { small: ['small'], medium: ['small','medium'], large: ['medium','large'], xl: ['large','xl'] };
     if (a.size && sizeMap[a.size]?.includes(b.sizeTier)) score += 20;
 
-    // Temp match
+    // Temp — 20pts
     if (a.temp) {
       if (a.temp === 'none') score += 10;
       else if (a.temp === 'both' && b.insulated) score += 20;
       else if (b.tempTiers.includes(a.temp)) score += 20;
     }
 
-    // Material match
+    // Material — 20pts
     if (a.material) {
       if (a.material === 'any') score += 10;
       else if (b.material === a.material) score += 20;
     }
 
-    // Feature match
-    if (a.feature && b.features.includes(a.feature)) score += 25;
+    // Features (multi-select) — 20pts each match
+    const featureList = Array.isArray(a.features) ? a.features : [];
+    const featMatches = featureList.filter(f => b.features.includes(f)).length;
+    score += featMatches * 20;
 
-    // Budget match
-    if (a.budget && b.priceTier === a.budget) score += 20;
-    // Adjacent budget tiers — partial credit
+    // Avoid — −35pts each violation
+    const avoidList = Array.isArray(a.avoid) ? a.avoid : [];
+    avoidList.forEach(key => {
+      if (AVOID_CHECKS[key] && AVOID_CHECKS[key](b)) score -= 35;
+    });
+
+    // Budget — 20pts exact, 8pts adjacent
     const tiers = ['low','mid','high','premium'];
     if (a.budget) {
-      const diff = Math.abs(tiers.indexOf(a.budget) - tiers.indexOf(b.priceTier));
-      if (diff === 1) score += 8;
+      if (b.priceTier === a.budget) score += 20;
+      else if (Math.abs(tiers.indexOf(a.budget) - tiers.indexOf(b.priceTier)) === 1) score += 8;
     }
 
     return { ...b, score };
   }).sort((a, b) => b.score - a.score);
+}
+
+// ─── SORT ──────────────────────────────────────────────────────────────────
+function sortedBottles() {
+  switch (sortMode) {
+    case 'price-asc':  return [...scoredBottles].sort((a, b) => a.price - b.price);
+    case 'price-desc': return [...scoredBottles].sort((a, b) => b.price - a.price);
+    case 'size-asc':   return [...scoredBottles].sort((a, b) => a.oz - b.oz);
+    case 'size-desc':  return [...scoredBottles].sort((a, b) => b.oz - a.oz);
+    default:           return [...scoredBottles];
+  }
+}
+
+function setSort(mode) {
+  sortMode = mode;
+  const all = ['relevance','price-asc','price-desc','size-asc','size-desc'];
+  all.forEach(m => {
+    const btn = document.getElementById('sort-' + m);
+    if (!btn) return;
+    btn.className = m === mode
+      ? 'text-xs font-medium px-3 py-1.5 rounded-lg bg-white text-stone-900 shadow-sm'
+      : 'text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition';
+  });
+  renderResultsGrid();
+}
+
+function toggleResultUnit() {
+  showMl = !showMl;
+  const btn = document.getElementById('result-unit-btn');
+  if (btn) btn.textContent = showMl ? 'Show in oz' : 'Show in ml';
+  renderResultsGrid();
+}
+
+function ozDisplay(oz) {
+  return showMl ? `${Math.round(oz * 29.574)} ml` : `${oz} oz`;
 }
 
 // ─── RESULTS ───────────────────────────────────────────────────────────────
@@ -579,25 +711,57 @@ function showResults() {
   document.getElementById('wizard-section').classList.add('hidden');
   document.getElementById('results-section').classList.remove('hidden');
 
-  const ranked = scoreBottles();
+  sortMode = 'relevance';
+  scoredBottles = scoreBottles();
+
+  // Render controls bar
+  document.getElementById('results-controls').innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-5 border-b border-stone-100">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="text-sm font-medium text-stone-500">Sort by:</span>
+        <div class="flex gap-1 bg-stone-100 rounded-xl p-1 flex-wrap">
+          <button id="sort-relevance"  onclick="setSort('relevance')"  class="text-xs font-medium px-3 py-1.5 rounded-lg bg-white text-stone-900 shadow-sm">Relevance</button>
+          <button id="sort-price-asc"  onclick="setSort('price-asc')"  class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Price ↑</button>
+          <button id="sort-price-desc" onclick="setSort('price-desc')" class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Price ↓</button>
+          <button id="sort-size-asc"   onclick="setSort('size-asc')"   class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Size ↑</button>
+          <button id="sort-size-desc"  onclick="setSort('size-desc')"  class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Size ↓</button>
+        </div>
+      </div>
+      <button id="result-unit-btn" onclick="toggleResultUnit()"
+        class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 border border-stone-200 rounded-lg hover:border-amber-400 text-stone-500 transition">
+        <i data-lucide="arrow-left-right" class="w-3 h-3"></i>
+        Show in ml
+      </button>
+    </div>
+  `;
+  lucide.createIcons();
+
+  renderResultsGrid();
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderResultsGrid() {
   const grid = document.getElementById('results-grid');
   grid.innerHTML = '';
 
-  ranked.forEach((b, idx) => {
+  const bottles = sortedBottles();
+
+  bottles.forEach((b, idx) => {
+    const isBest = sortMode === 'relevance' && idx === 0;
+    const materialLabel = b.material === 'steel' ? 'Stainless' : b.material === 'plastic' ? 'BPA-free plastic' : 'Glass';
+
     const card = document.createElement('div');
     card.className = 'card-hover bg-white border border-stone-200 rounded-2xl overflow-hidden fade-in';
-    card.style.transitionDelay = (idx * 0.05) + 's';
-
-    const matchPct = Math.min(99, Math.round((b.score / 125) * 100));
+    card.style.transitionDelay = (idx * 0.04) + 's';
 
     card.innerHTML = `
       <div class="bottle-img-wrap h-44 flex items-center justify-center relative">
-        ${idx === 0 ? '<div class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">Best Match</div>' : ''}
+        ${isBest ? '<div class="absolute top-3 left-3 bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">Best Match</div>' : ''}
         <div class="text-center">
           <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style="background:${b.color}22">
             <i data-lucide="droplets" class="w-8 h-8" style="color:${b.color}"></i>
           </div>
-          <span class="text-xs text-stone-400 font-medium">${b.oz} oz · ${b.material === 'steel' ? 'Stainless' : b.material === 'plastic' ? 'BPA-free plastic' : 'Glass'}</span>
+          <span class="text-xs text-stone-400 font-medium">${ozDisplay(b.oz)} · ${materialLabel}</span>
         </div>
       </div>
       <div class="p-4">
@@ -611,13 +775,9 @@ function showResults() {
         <div class="mt-3 mb-4 flex flex-wrap gap-1.5">
           ${b.highlight.map(h => `<span class="text-xs text-stone-500 bg-stone-100 px-2 py-0.5 rounded-lg">${h}</span>`).join('')}
         </div>
-        <a
-          href="${b.url}"
-          target="_blank"
-          rel="noopener"
+        <a href="${b.url}" target="_blank" rel="noopener"
           onclick="trackBottleClick('${b.id}', '${b.name}')"
-          class="w-full btn-primary text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2"
-        >
+          class="w-full btn-primary text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2">
           <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
           Buy on Amazon
         </a>
@@ -627,13 +787,9 @@ function showResults() {
   });
 
   lucide.createIcons();
-
-  // Animate in
   setTimeout(() => {
     document.querySelectorAll('#results-grid .fade-in').forEach(el => el.classList.add('visible'));
   }, 50);
-
-  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
 }
 
 function trackBottleClick(id, name) {
@@ -648,7 +804,6 @@ const observer = new IntersectionObserver((entries) => {
 document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  // Immediately show anything already in viewport (hero section)
   setTimeout(() => {
     document.querySelectorAll('.fade-in').forEach(el => {
       const rect = el.getBoundingClientRect();
