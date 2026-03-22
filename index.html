@@ -742,9 +742,17 @@ let scoredBottles = [];
 
 // ─── ANALYTICS ─────────────────────────────────────────────────────────────
 function trackEvent(type, data = {}) {
+  const event = { type, data, ts: Date.now() };
+  // Keep local copy for offline/preview fallback
   const events = JSON.parse(localStorage.getItem('bf_events') || '[]');
-  events.push({ type, data, ts: Date.now() });
+  events.push(event);
   localStorage.setItem('bf_events', JSON.stringify(events));
+  // Persist server-side (fire and forget)
+  fetch('/api/track', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(event),
+  }).catch(() => {});
 }
 
 // ─── QUIZ ──────────────────────────────────────────────────────────────────

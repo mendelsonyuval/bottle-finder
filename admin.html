@@ -179,28 +179,22 @@
       <p id="no-events" class="text-stone-400 text-sm text-center py-6 hidden">No events recorded yet. Visit the main site to start tracking.</p>
     </div>
 
-    <!-- Production note -->
-    <div class="mt-6 border border-amber-100 bg-amber-50 rounded-2xl p-4 flex gap-3">
-      <i data-lucide="info" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
-      <p class="text-sm text-amber-700">
-        <strong>Production note:</strong> This dashboard reads from <code>localStorage</code>, so data is per-browser and per-device.
-        For cross-device analytics, integrate <a href="https://plausible.io" class="underline" target="_blank">Plausible Analytics</a> and replace affiliate tracking with a Netlify Function to persist click events server-side.
-      </p>
-    </div>
   </main>
 </div>
 
 <script>
 const ADMIN_PASSWORD = 'admin2024';
 let currentRange = '7d';
+let allEvents = []; // server-side cache
 
 // ─── AUTH ───────────────────────────────────────────────────────────────────
-function checkLogin() {
+async function checkLogin() {
   const val = document.getElementById('pw-input').value;
   if (val === ADMIN_PASSWORD) {
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('dashboard').classList.remove('hidden');
-    renderDashboard();
+    await loadEvents();
+    renderWithCache();
   } else {
     document.getElementById('pw-error').classList.remove('hidden');
   }
@@ -221,7 +215,7 @@ function setRange(r) {
     if (id === r) btn.className = 'px-3 py-1.5 rounded-lg transition bg-white text-stone-900 shadow-sm';
     else btn.className = 'px-3 py-1.5 rounded-lg transition text-stone-500 hover:text-stone-700';
   });
-  renderDashboard();
+  renderWithCache(); // re-filter cached events, no re-fetch
 }
 
 function getRangeCutoff() {
@@ -233,16 +227,27 @@ function getRangeCutoff() {
 }
 
 function getFilteredEvents() {
-  const all = JSON.parse(localStorage.getItem('bf_events') || '[]');
   const cutoff = getRangeCutoff();
-  return all.filter(e => e.ts >= cutoff);
+  return allEvents.filter(e => e.ts >= cutoff);
+}
+
+async function loadEvents() {
+  try {
+    const res = await fetch('/api/analytics');
+    if (res.ok) {
+      allEvents = await res.json();
+      return;
+    }
+  } catch (e) {}
+  // Fallback to localStorage (local preview / API unavailable)
+  allEvents = JSON.parse(localStorage.getItem('bf_events') || '[]');
 }
 
 // ─── RENDER ─────────────────────────────────────────────────────────────────
-function renderDashboard() {
+function renderWithCache() {
   const events = getFilteredEvents();
 
-  const views = events.filter(e => e.type === 'page_view').length;
+  const views  = events.filter(e => e.type === 'page_view').length;
   const starts = events.filter(e => e.type === 'wizard_start').length;
   const completions = events.filter(e => e.type === 'wizard_complete').length;
   const clicks = events.filter(e => e.type === 'bottle_click').length;
@@ -388,10 +393,12 @@ function renderRecentEvents(events) {
   }).join('');
 }
 
-function clearData() {
+async function clearData() {
   if (confirm('Clear all analytics data? This cannot be undone.')) {
+    await fetch('/api/clear', { method: 'DELETE' }).catch(() => {});
     localStorage.removeItem('bf_events');
-    renderDashboard();
+    allEvents = [];
+    renderWithCache();
   }
 }
 
