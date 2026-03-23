@@ -72,6 +72,9 @@
           <button onclick="setRange('30d')" id="range-30d" class="px-3 py-1.5 rounded-lg transition">30 days</button>
           <button onclick="setRange('all')" id="range-all" class="px-3 py-1.5 rounded-lg transition">All time</button>
         </div>
+        <button onclick="refreshDashboard()" id="refresh-btn" class="text-stone-400 hover:text-stone-600 transition" title="Refresh data">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
         <a href="index.html" class="text-stone-400 hover:text-stone-600 transition" title="View site">
           <i data-lucide="external-link" class="w-4 h-4"></i>
         </a>
@@ -202,23 +205,38 @@ let currentRange = '7d';
 let allEvents = []; // server-side cache
 
 // ─── AUTH ───────────────────────────────────────────────────────────────────
+async function showDashboard() {
+  document.getElementById('login-overlay').style.display = 'none';
+  document.getElementById('dashboard').classList.remove('hidden');
+  await Promise.all([loadEvents(), loadFeedback()]);
+  renderWithCache();
+}
+
 async function checkLogin() {
   const val = document.getElementById('pw-input').value;
   if (val === ADMIN_PASSWORD) {
-    document.getElementById('login-overlay').style.display = 'none';
-    document.getElementById('dashboard').classList.remove('hidden');
-    await Promise.all([loadEvents(), loadFeedback()]);
-    renderWithCache();
+    sessionStorage.setItem('bf_admin_auth', '1');
+    await showDashboard();
   } else {
     document.getElementById('pw-error').classList.remove('hidden');
   }
 }
 
 function logout() {
+  sessionStorage.removeItem('bf_admin_auth');
   document.getElementById('login-overlay').style.display = 'flex';
   document.getElementById('dashboard').classList.add('hidden');
   document.getElementById('pw-input').value = '';
   document.getElementById('pw-error').classList.add('hidden');
+}
+
+async function refreshDashboard() {
+  const btn = document.getElementById('refresh-btn').querySelector('i');
+  btn.style.transition = 'transform 0.6s';
+  btn.style.transform = 'rotate(360deg)';
+  setTimeout(() => { btn.style.transition = ''; btn.style.transform = ''; }, 650);
+  await Promise.all([loadEvents(), loadFeedback()]);
+  renderWithCache();
 }
 
 // ─── RANGE ──────────────────────────────────────────────────────────────────
@@ -488,9 +506,12 @@ function escapeHtml(str) {
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   lucide.createIcons();
   setRange('7d');
+  if (sessionStorage.getItem('bf_admin_auth') === '1') {
+    await showDashboard();
+  }
 });
 </script>
 </body>
