@@ -1099,5 +1099,79 @@ document.addEventListener('DOMContentLoaded', () => {
   trackEvent('page_view');
 });
 </script>
+
+<!-- ─── FEEDBACK WIDGET ──────────────────────────────────────────────────── -->
+<div style="position:fixed;bottom:24px;right:24px;z-index:200">
+  <!-- Panel -->
+  <div id="feedback-panel" class="hidden mb-3 bg-white border border-stone-200 rounded-2xl shadow-xl overflow-hidden" style="width:320px">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-stone-100">
+      <span class="font-semibold text-stone-900 text-sm">Share feedback</span>
+      <button onclick="closeFeedback()" class="text-stone-400 hover:text-stone-600 transition p-0.5">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div id="fb-form" class="p-4">
+      <textarea id="fb-message" rows="3"
+        placeholder="What's on your mind? Suggestions, issues, anything…"
+        class="w-full text-sm border border-stone-200 rounded-xl px-3 py-2.5 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition resize-none mb-3"></textarea>
+      <input id="fb-email" type="email" placeholder="Email (optional — for follow-up)"
+        class="w-full text-sm border border-stone-200 rounded-xl px-3 py-2 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition mb-3">
+      <p id="fb-error" class="text-red-500 text-xs mb-2 hidden">Please enter a message first.</p>
+      <button onclick="submitFeedback()"
+        class="w-full bg-stone-900 text-white text-sm font-semibold py-2.5 rounded-xl hover:bg-stone-800 transition">
+        Send
+      </button>
+    </div>
+    <div id="fb-success" class="hidden p-6 text-center">
+      <div class="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="check" class="w-5 h-5 text-amber-600"></i>
+      </div>
+      <p class="font-semibold text-stone-900 text-sm mb-1">Thanks for your feedback!</p>
+      <p class="text-stone-400 text-xs">We really appreciate it.</p>
+    </div>
+  </div>
+  <!-- Button -->
+  <div class="flex justify-end">
+    <button id="feedback-btn" onclick="toggleFeedback()"
+      class="flex items-center gap-2 bg-stone-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg hover:bg-stone-800 active:scale-95 transition">
+      <i data-lucide="message-circle" class="w-4 h-4"></i>
+      Feedback
+    </button>
+  </div>
+</div>
+
+<script>
+function toggleFeedback() {
+  const panel = document.getElementById('feedback-panel');
+  const isHidden = panel.classList.toggle('hidden');
+  if (!isHidden) document.getElementById('fb-message').focus();
+}
+function closeFeedback() {
+  document.getElementById('feedback-panel').classList.add('hidden');
+}
+async function submitFeedback() {
+  const message = document.getElementById('fb-message').value.trim();
+  const email   = document.getElementById('fb-email').value.trim();
+  const errEl   = document.getElementById('fb-error');
+  if (!message) { errEl.classList.remove('hidden'); return; }
+  errEl.classList.add('hidden');
+  fetch('/api/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, email }),
+  }).catch(() => {});
+  document.getElementById('fb-form').classList.add('hidden');
+  document.getElementById('fb-success').classList.remove('hidden');
+  setTimeout(() => {
+    closeFeedback();
+    setTimeout(() => {
+      document.getElementById('fb-form').classList.remove('hidden');
+      document.getElementById('fb-success').classList.add('hidden');
+      document.getElementById('fb-message').value = '';
+      document.getElementById('fb-email').value = '';
+    }, 400);
+  }, 2500);
+}
+</script>
 </body>
 </html>

@@ -164,6 +164,21 @@
       <div id="answers-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"></div>
     </div>
 
+    <!-- Feedback -->
+    <div class="bg-white border border-stone-200 rounded-2xl p-6 mb-6">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <h2 class="font-semibold text-stone-900">User Feedback</h2>
+            <span id="feedback-unread-badge" class="hidden bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"></span>
+          </div>
+          <p class="text-stone-400 text-sm">Messages submitted via the feedback widget</p>
+        </div>
+      </div>
+      <div id="feedback-list" class="space-y-3"></div>
+      <p id="no-feedback" class="text-stone-400 text-sm text-center py-4 hidden">No feedback yet.</p>
+    </div>
+
     <!-- Recent Events -->
     <div class="bg-white border border-stone-200 rounded-2xl p-6">
       <div class="flex items-center justify-between mb-5">
@@ -193,7 +208,7 @@ async function checkLogin() {
   if (val === ADMIN_PASSWORD) {
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('dashboard').classList.remove('hidden');
-    await loadEvents();
+    await Promise.all([loadEvents(), loadFeedback()]);
     renderWithCache();
   } else {
     document.getElementById('pw-error').classList.remove('hidden');
@@ -400,6 +415,77 @@ async function clearData() {
     allEvents = [];
     renderWithCache();
   }
+}
+
+// ─── FEEDBACK ────────────────────────────────────────────────────────────────
+let allFeedback = [];
+
+async function loadFeedback() {
+  try {
+    const res = await fetch('/api/feedback-list');
+    if (res.ok) allFeedback = await res.json();
+  } catch (e) {}
+  renderFeedback();
+}
+
+function renderFeedback() {
+  const list = document.getElementById('feedback-list');
+  const empty = document.getElementById('no-feedback');
+  const badge = document.getElementById('feedback-unread-badge');
+
+  const unread = allFeedback.filter(f => !f.read).length;
+  if (unread > 0) {
+    badge.textContent = unread + ' unread';
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+
+  if (allFeedback.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  list.innerHTML = allFeedback.map(f => {
+    const date = new Date(f.ts).toLocaleString();
+    return `
+      <div class="flex gap-4 p-4 rounded-xl border ${f.read ? 'border-stone-100 bg-stone-50' : 'border-amber-100 bg-amber-50'}">
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-stone-800 leading-relaxed mb-2">${escapeHtml(f.message)}</p>
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="text-xs text-stone-400">${date}</span>
+            ${f.email ? `<span class="text-xs text-stone-500">${escapeHtml(f.email)}</span>` : ''}
+            <span class="text-xs font-medium ${f.read ? 'text-stone-400' : 'text-amber-600'}">${f.read ? 'Read' : '● Unread'}</span>
+          </div>
+        </div>
+        <button onclick="toggleFeedbackRead('${f.id}', ${f.read})"
+          class="flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg border transition
+            ${f.read
+              ? 'border-stone-200 text-stone-500 hover:border-amber-300 hover:text-amber-600'
+              : 'border-amber-300 text-amber-700 bg-white hover:bg-amber-50'}">
+          ${f.read ? 'Mark unread' : 'Mark read'}
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+async function toggleFeedbackRead(id, currentRead) {
+  const newRead = !currentRead;
+  await fetch('/api/feedback-update', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, read: newRead }),
+  }).catch(() => {});
+  const item = allFeedback.find(f => f.id === id);
+  if (item) item.read = newRead;
+  renderFeedback();
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
