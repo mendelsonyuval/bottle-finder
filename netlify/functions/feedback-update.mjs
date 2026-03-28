@@ -4,7 +4,7 @@ export default async (req) => {
   if (req.method !== 'PATCH') return new Response('Method Not Allowed', { status: 405 });
   try {
     const { id, read } = await req.json();
-    const store = getStore('feedback');
+    const store = getStore({ name: 'feedback', consistency: 'strong' });
     const val = await store.get(id);
     if (!val) {
       return new Response(JSON.stringify({ error: 'Not found' }), {

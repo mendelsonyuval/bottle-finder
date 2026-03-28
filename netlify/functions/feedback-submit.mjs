@@ -9,7 +9,7 @@ export default async (req) => {
         status: 400, headers: { 'Content-Type': 'application/json' },
       });
     }
-    const store = getStore('feedback');
+    const store = getStore({ name: 'feedback', consistency: 'strong' });
     const ts = Date.now();
     const id = `${ts}-${Math.random().toString(36).slice(2, 8)}`;
     await store.set(id, JSON.stringify({

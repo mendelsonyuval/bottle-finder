@@ -3,7 +3,7 @@ import { getStore } from '@netlify/blobs';
 export default async (req) => {
   if (req.method !== 'GET') return new Response('Method Not Allowed', { status: 405 });
   try {
-    const store = getStore('feedback');
+    const store = getStore({ name: 'feedback', consistency: 'strong' });
     const { blobs } = await store.list();
     const items = await Promise.all(
       blobs.map(async ({ key }) => {

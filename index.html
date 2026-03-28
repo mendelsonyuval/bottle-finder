@@ -5,6 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>Bottle Finder — Find Your Perfect Water Bottle</title>
+  <meta name="description" content="Answer 7 quick questions and find your perfect water bottle. Compare insulated, glass, and plastic options from Hydro Flask, Stanley, Owala, Yeti, and 26 more top brands." />
+  <meta name="keywords" content="water bottle finder, best water bottle, hydro flask, stanley quencher, owala freesip, yeti rambler, insulated water bottle, reusable water bottle quiz" />
+  <link rel="canonical" href="https://cerulean-caramel-b620a7.netlify.app/" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cerulean-caramel-b620a7.netlify.app/" />
+  <meta property="og:title" content="Bottle Finder — Find Your Perfect Water Bottle" />
+  <meta property="og:description" content="Answer 7 quick questions and find your perfect water bottle from 30 top-rated options." />
+  <meta property="og:image" content="https://cerulean-caramel-b620a7.netlify.app/og-image.png" />
+  <meta property="og:site_name" content="Bottle Finder" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bottle Finder — Find Your Perfect Water Bottle" />
+  <meta name="twitter:description" content="Answer 7 quick questions and find your perfect water bottle from 30 top-rated options." />
+  <meta name="twitter:image" content="https://cerulean-caramel-b620a7.netlify.app/og-image.png" />
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Bottle Finder",
+        "url": "https://cerulean-caramel-b620a7.netlify.app/",
+        "description": "A personalized quiz that recommends the best water bottle for your lifestyle from 30 top-rated options.",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@type": "Organization", "name": "Bottle Finder" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the best water bottle?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The best water bottle depends on your needs. Use the Bottle Finder quiz to get a personalized recommendation based on your usage, size preference, temperature needs, material, and budget." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the best insulated water bottle?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Top insulated water bottles include the Hydro Flask Wide Mouth, Stanley Quencher, Yeti Rambler, and Owala FreeSip. Our quiz matches you with the best one for your lifestyle." }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I choose a water bottle?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Consider where you'll use it (gym, office, outdoor), how much you drink, whether you need insulation, your material preference (steel, plastic, glass), and your budget. Our 7-question quiz handles all of this for you." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the best water bottle for the gym?",
+            "acceptedAnswer": { "@type": "Answer", "text": "For the gym, popular choices include the Owala FreeSip, Takeya Actives, and BlenderBottle Classic. Take our quiz for a personalized pick." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -35,6 +93,8 @@
     .btn-primary { background: #1c1917; color: #fff; transition: background 0.15s, transform 0.15s; }
     .btn-primary:hover { background: #292524; transform: translateY(-1px); }
     .btn-primary:disabled { background: #d6d3d1; cursor: not-allowed; transform: none; }
+    .btn-secondary { background: transparent; color: #44403c; border: 2px solid #e7e5e4; transition: border-color 0.15s, background 0.15s, transform 0.15s; }
+    .btn-secondary:hover { border-color: #d6d3d1; background: #f5f5f4; transform: translateY(-1px); }
     .card-hover { transition: box-shadow 0.2s, transform 0.2s; }
     .card-hover:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
     .progress-bar { transition: width 0.4s ease; }
@@ -47,10 +107,13 @@
 <header class="border-b border-stone-100 sticky top-0 bg-white/95 backdrop-blur-sm z-50">
   <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
     <div class="flex items-center gap-2">
-      <i data-lucide="droplets" class="w-5 h-5 text-amber-600"></i>
+      <svg viewBox="0 0 24 24" fill="none" class="w-[34px] h-[34px] flex-shrink-0">
+        <text x="3" y="19" font-family="Inter,system-ui" font-size="19" font-weight="800" fill="#d97706">B</text>
+        <path d="M5 4.5 Q5 1.5 8.5 1.5 Q12 1.5 12 4.5 Z" fill="#d97706"/>
+      </svg>
       <span class="font-semibold text-stone-900 text-lg tracking-tight">Bottle Finder</span>
     </div>
-    <button onclick="startQuiz()" class="btn-primary text-sm font-medium px-4 py-2 rounded-xl">
+    <button id="nav-cta" onclick="startQuiz()" class="btn-primary text-sm font-medium px-4 py-2 rounded-xl">
       Find My Bottle
     </button>
   </div>
@@ -102,9 +165,6 @@
     <div class="mb-8">
       <div class="flex items-center justify-between mb-2">
         <span class="text-sm font-medium text-stone-500" id="step-label">Step 1 of 7</span>
-        <button id="back-btn" onclick="prevStep()" class="text-sm text-stone-400 hover:text-stone-600 transition-colors hidden flex items-center gap-1">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
-        </button>
       </div>
       <div class="h-1.5 bg-stone-200 rounded-full overflow-hidden">
         <div id="progress-bar" class="progress-bar h-full bg-amber-500 rounded-full" style="width:14.2%"></div>
@@ -113,16 +173,18 @@
 
     <div id="step-container"></div>
 
-    <div class="mt-6 flex items-center justify-between">
+    <div class="mt-6 flex items-center justify-between gap-3">
+      <button id="back-btn" onclick="prevStep()" class="hidden btn-secondary px-5 py-2.5 rounded-xl font-medium flex items-center gap-2">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back
+      </button>
       <div id="skip-hint" class="hidden text-sm text-stone-400">
         No strong preference? Just click Next.
       </div>
-      <div class="ml-auto">
-        <button id="next-btn" onclick="nextStep()" disabled class="btn-primary px-6 py-2.5 rounded-xl font-medium flex items-center gap-2">
-          <span id="next-label">Next</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </button>
-      </div>
+      <button id="next-btn" onclick="nextStep()" disabled class="btn-primary px-6 py-2.5 rounded-xl font-medium flex items-center gap-2 ml-auto">
+        <span id="next-label">Next</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
     </div>
   </div>
 </section>
@@ -138,6 +200,8 @@
       <h2 class="text-3xl font-bold text-stone-900 mb-3 tracking-tight">Here are your best bottles</h2>
       <p class="text-stone-500">Based on your answers — use the controls below to sort and adjust the view.</p>
     </div>
+    <!-- Answer summary injected here -->
+    <div id="results-summary"></div>
     <!-- Sort + unit controls injected here -->
     <div id="results-controls"></div>
     <div id="results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"></div>
@@ -154,7 +218,10 @@
 <footer class="border-t border-stone-100 py-10 mt-8">
   <div class="max-w-5xl mx-auto px-4 text-center">
     <div class="flex items-center justify-center gap-2 mb-3">
-      <i data-lucide="droplets" class="w-4 h-4 text-amber-600"></i>
+      <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 flex-shrink-0">
+        <text x="3" y="19" font-family="Inter,system-ui" font-size="19" font-weight="800" fill="#d97706">B</text>
+        <path d="M5 4.5 Q5 1.5 8.5 1.5 Q12 1.5 12 4.5 Z" fill="#d97706"/>
+      </svg>
       <span class="font-medium text-stone-700">Bottle Finder</span>
     </div>
     <p class="text-stone-400 text-sm max-w-md mx-auto leading-relaxed">
@@ -199,13 +266,13 @@ const QUESTIONS = [
   {
     id: 'size',
     icon: 'ruler',
-    question: 'How much do you typically drink?',
+    question: 'What size bottle are you looking for?',
     showUnit: true,
     options: [
-      { value: 'small',  labelOz: 'Small  (≤ 16 oz)',   labelMl: 'Small  (≤ 473 ml)',    icon: 'minus-circle' },
-      { value: 'medium', labelOz: 'Medium (20 – 24 oz)', labelMl: 'Medium (591 – 710 ml)', icon: 'circle' },
-      { value: 'large',  labelOz: 'Large  (32 oz)',      labelMl: 'Large  (946 ml)',        icon: 'plus-circle' },
-      { value: 'xl',     labelOz: 'XL     (40 oz+)',     labelMl: 'XL     (1183+ ml)',      icon: 'maximize-2' },
+      { value: 'small',  labelOz: 'Small  (up to 16 oz)',  labelMl: 'Small  (up to 473 ml)',   icon: 'minus-circle' },
+      { value: 'medium', labelOz: 'Medium (20 – 27 oz)',   labelMl: 'Medium (591 – 800 ml)',   icon: 'circle' },
+      { value: 'large',  labelOz: 'Large  (28 – 36 oz)',   labelMl: 'Large  (830 – 1065 ml)', icon: 'plus-circle' },
+      { value: 'xl',     labelOz: 'XL     (40 oz+)',       labelMl: 'XL     (1183+ ml)',       icon: 'maximize-2' },
     ]
   },
   {
@@ -234,8 +301,9 @@ const QUESTIONS = [
     id: 'features',
     icon: 'star',
     question: 'Must-have features?',
-    hint: 'Select all that matter to you',
+    hint: 'Select all that matter to you — skip if no preference',
     multiSelect: true,
+    optional: true,
     options: [
       { value: 'filter', label: 'Built-in filter',   icon: 'filter' },
       { value: 'straw',  label: 'Straw / spout lid', icon: 'git-branch' },
@@ -266,6 +334,8 @@ const QUESTIONS = [
     id: 'budget',
     icon: 'dollar-sign',
     question: "What's your budget?",
+    hint: 'Select all that apply',
+    multiSelect: true,
     options: [
       { value: 'low',     label: 'Under $20', icon: 'tag' },
       { value: 'mid',     label: '$20 – $40', icon: 'tag' },
@@ -723,7 +793,7 @@ const BOTTLE_IMAGES = {
   'hydro-flask-32-trail':     'https://m.media-amazon.com/images/I/51KuOqj6txL._SL250_.jpg',
   'yeti-rambler-64':          'https://m.media-amazon.com/images/I/61p21aBxx+L._SL250_.jpg',
   'simple-modern-summit-32':  'https://m.media-amazon.com/images/I/41AZMMCugQL._SL250_.jpg',
-  'iron-flask-32':            'https://m.media-amazon.com/images/I/615nVJDTLxS._SL250_.jpg',
+  'iron-flask-32':            'https://m.media-amazon.com/images/I/51Mx8sbOFCL._SL250_.jpg',
   'thermos-funtainer-16':     'https://m.media-amazon.com/images/I/717zPAroQSL._SL250_.jpg',
   'reduce-hydrate-pro-24':    'https://m.media-amazon.com/images/I/51IyjkbOpzL._SL250_.jpg',
   'zojirushi-sm-va-24':       'https://m.media-amazon.com/images/I/411FweVngjL._SL250_.jpg',
@@ -841,9 +911,8 @@ function renderStep() {
         <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
           <i data-lucide="${q.icon}" class="w-4 h-4 text-amber-600"></i>
         </div>
-        ${q.optional ? '<span class="text-xs font-medium text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">Optional</span>' : ''}
       </div>
-      <h2 class="text-xl font-bold text-stone-900 mb-3">${q.question}</h2>
+      <h2 class="text-xl font-bold text-stone-900 mb-3">${q.question}${q.optional ? ' <span class="text-base font-normal text-stone-400">(optional)</span>' : ''}</h2>
       ${hintHtml}
       ${unitHtml}
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">${optionsHtml}</div>
@@ -890,6 +959,7 @@ function nextStep() {
   const q = QUESTIONS[currentStep];
   const hasAnswer = q.optional ? true : (q.multiSelect ? (answers[q.id] || []).length > 0 : !!answers[q.id]);
   if (!hasAnswer) return;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   if (currentStep < QUESTIONS.length - 1) {
     currentStep++;
     renderStep();
@@ -901,6 +971,7 @@ function nextStep() {
 function prevStep() {
   if (currentStep > 0) {
     currentStep--;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     renderStep();
   }
 }
@@ -912,6 +983,9 @@ function resetQuiz() {
   document.getElementById('results-section').classList.add('hidden');
   document.getElementById('hero').style.display = '';
   document.getElementById('wizard-section').classList.add('hidden');
+  const navCta = document.getElementById('nav-cta');
+  navCta.textContent = 'Find My Bottle';
+  navCta.onclick = startQuiz;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -954,11 +1028,15 @@ function scoreBottles() {
       if (AVOID_CHECKS[key] && AVOID_CHECKS[key](b)) score -= 35;
     });
 
-    // Budget — 20pts exact, 8pts adjacent
+    // Budget — 20pts exact match, 8pts adjacent (multi-select)
     const tiers = ['low','mid','high','premium'];
-    if (a.budget) {
-      if (b.priceTier === a.budget) score += 20;
-      else if (Math.abs(tiers.indexOf(a.budget) - tiers.indexOf(b.priceTier)) === 1) score += 8;
+    const budgetList = Array.isArray(a.budget) ? a.budget : (a.budget ? [a.budget] : []);
+    if (budgetList.length > 0) {
+      if (budgetList.includes(b.priceTier)) score += 20;
+      else {
+        const minDist = Math.min(...budgetList.map(bg => Math.abs(tiers.indexOf(bg) - tiers.indexOf(b.priceTier))));
+        if (minDist === 1) score += 8;
+      }
     }
 
     return { ...b, score };
@@ -993,27 +1071,65 @@ function ozDisplay(oz) {
   return `${oz} oz`;
 }
 
+// ─── ANSWER SUMMARY ────────────────────────────────────────────────────────
+const ANSWER_LABELS = {
+  use:      { everyday:'Everyday carry', gym:'Gym & sports', outdoor:'Hiking & outdoors', office:'Office & desk', travel:'Travel', kids:'Kids' },
+  size:     { small:'Up to 16 oz', medium:'20–27 oz', large:'28–36 oz', xl:'40+ oz' },
+  temp:     { cold:'Cold only', hot:'Hot only', both:'Hot & cold', none:'No preference' },
+  material: { steel:'Stainless steel', plastic:'BPA-free plastic', glass:'Glass', any:'No preference' },
+  features: { filter:'Built-in filter', straw:'Straw lid', wide:'Wide mouth', handle:'Carry handle', light:'Lightweight' },
+  avoid:    { straw:'Straw lid', handle:'Handle', wide:'Wide mouth', filter:'Filter', plastic:'Plastic', glass:'Glass', insulated:'Insulated', bulky:'XL size' },
+  budget:   { low:'Under $20', mid:'$20–$40', high:'$40–$60', premium:'$60+' },
+};
+
+function buildSummaryChips() {
+  const chips = [];
+  QUESTIONS.forEach(q => {
+    const val = answers[q.id];
+    if (!val || (Array.isArray(val) && val.length === 0)) return;
+    const map = ANSWER_LABELS[q.id] || {};
+    const display = Array.isArray(val) ? val.map(v => map[v] || v).join(', ') : (map[val] || val);
+    chips.push({ label: q.question.replace('?','').replace(/\(optional\)/i,'').trim(), display });
+  });
+  return chips;
+}
+
 // ─── RESULTS ───────────────────────────────────────────────────────────────
 function showResults() {
   trackEvent('wizard_complete', { answers });
   document.getElementById('wizard-section').classList.add('hidden');
   document.getElementById('results-section').classList.remove('hidden');
 
+  // Update nav CTA
+  const navCta = document.getElementById('nav-cta');
+  navCta.textContent = 'Find Another Bottle';
+  navCta.onclick = resetQuiz;
+
   sortMode = 'relevance';
   scoredBottles = scoreBottles();
 
+  // Render answer summary
+  const chips = buildSummaryChips();
+  document.getElementById('results-summary').innerHTML = `
+    <div class="bg-stone-50 border border-stone-200 rounded-2xl px-4 py-3 mb-5 flex flex-wrap items-center gap-2">
+      <span class="text-xs font-semibold text-stone-500 mr-1">Your answers:</span>
+      ${chips.map(c => `<span class="text-xs bg-white border border-stone-200 text-stone-700 px-2.5 py-1 rounded-lg"><span class="text-stone-400">${c.label}:</span> ${c.display}</span>`).join('')}
+      <button onclick="editAnswers()" class="ml-auto inline-flex items-center gap-1 text-xs font-medium text-amber-700 hover:text-amber-800 transition-colors">
+        <i data-lucide="pencil" class="w-3 h-3"></i> Change
+      </button>
+    </div>
+  `;
+
   // Render controls bar
   document.getElementById('results-controls').innerHTML = `
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-5 border-b border-stone-100">
-      <div class="flex items-center gap-2 flex-wrap">
-        <span class="text-sm font-medium text-stone-500">Sort by:</span>
-        <div class="flex gap-1 bg-stone-100 rounded-xl p-1 flex-wrap">
-          <button id="sort-relevance"  onclick="setSort('relevance')"  class="text-xs font-medium px-3 py-1.5 rounded-lg bg-white text-stone-900 shadow-sm">Relevance</button>
-          <button id="sort-price-asc"  onclick="setSort('price-asc')"  class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Price ↑</button>
-          <button id="sort-price-desc" onclick="setSort('price-desc')" class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Price ↓</button>
-          <button id="sort-size-asc"   onclick="setSort('size-asc')"   class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Size ↑</button>
-          <button id="sort-size-desc"  onclick="setSort('size-desc')"  class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Size ↓</button>
-        </div>
+    <div class="flex flex-wrap items-center gap-3 mb-6 pb-5 border-b border-stone-100">
+      <span class="text-sm font-medium text-stone-500">Sort by:</span>
+      <div class="flex gap-1 bg-stone-100 rounded-xl p-1 flex-wrap">
+        <button id="sort-relevance"  onclick="setSort('relevance')"  class="text-xs font-medium px-3 py-1.5 rounded-lg bg-white text-stone-900 shadow-sm">Relevance</button>
+        <button id="sort-price-asc"  onclick="setSort('price-asc')"  class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Price ↑</button>
+        <button id="sort-price-desc" onclick="setSort('price-desc')" class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Price ↓</button>
+        <button id="sort-size-asc"   onclick="setSort('size-asc')"   class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Size ↑</button>
+        <button id="sort-size-desc"  onclick="setSort('size-desc')"  class="text-xs font-medium px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700 transition">Size ↓</button>
       </div>
     </div>
   `;
@@ -1021,6 +1137,15 @@ function showResults() {
 
   renderResultsGrid();
   document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editAnswers() {
+  document.getElementById('results-section').classList.add('hidden');
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('wizard-section').classList.remove('hidden');
+  currentStep = 0;
+  renderStep();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderResultsGrid() {
