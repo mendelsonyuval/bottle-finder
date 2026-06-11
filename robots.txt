@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /juva.html
 
-Sitemap: https://cerulean-caramel-b620a7.netlify.app/sitemap.xml
+Sitemap: https://mybottlefinder.com/sitemap.xml

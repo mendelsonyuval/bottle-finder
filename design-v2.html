@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Bottle Finder Quiz — What Water Bottle Should I Get? | Bottle Finder</title>
+  <meta name="description" content="Not sure which water bottle to get? Take our free 7-question quiz and instantly find your perfect match from 50 top-rated bottles." />
+  <meta name="keywords" content="water bottle finder quiz, what water bottle should I get, best water bottle, water bottle recommendation, hydro flask, stanley quencher, owala freesip, yeti rambler, insulated water bottle quiz" />
+  <link rel="canonical" href="https://mybottlefinder.com/" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mybottlefinder.com/" />
+  <meta property="og:title" content="Water Bottle Finder Quiz — What Water Bottle Should I Get?" />
+  <meta property="og:description" content="Take our free 7-question quiz and instantly find your perfect water bottle from 50 top-rated options. Hydro Flask, Stanley, Owala, Yeti, and more." />
+  <meta property="og:image" content="https://mybottlefinder.com/og-image.png" />
+  <meta property="og:site_name" content="Bottle Finder" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Water Bottle Finder Quiz — What Water Bottle Should I Get?" />
+  <meta name="twitter:description" content="Take our free 7-question quiz and instantly find your perfect water bottle from 50 top-rated options." />
+  <meta name="twitter:image" content="https://mybottlefinder.com/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #F7F4F0;
+      --bg-card:  #FFFFFF;
+      --ink:      #17130F;
+      --ink-2:    #5C534A;
+      --ink-3:    #A39890;
+      --border:   #E4DDD6;
+      --amber:    #C47A2E;
+      --amber-lt: #FBF3E8;
+      --amber-dk: #9E601E;
+      --radius:   14px;
+      --radius-lg: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    /* ── UTILS ── */
+    .label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .rule { border: none; border-top: 1px solid var(--border); }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,244,240,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 32px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 17px; font-weight: 800; color: var(--ink);
+      letter-spacing: -0.03em; text-decoration: none;
+    }
+    .nav-logo-mark { display:flex; align-items:center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-dark {
+      background: var(--ink); color: var(--bg);
+      padding: 10px 20px; border-radius: 100px;
+    }
+    .btn-dark:hover { background: #2E2720; transform: translateY(-1px); }
+    .btn-dark:disabled { background: var(--border); cursor: not-allowed; transform: none; }
+    .btn-ghost {
+      background: transparent; color: var(--ink-2);
+      border: 1.5px solid var(--border);
+      padding: 10px 18px; border-radius: 100px;
+    }
+    .btn-ghost:hover { border-color: var(--ink-3); background: #fff; }
+    .btn-amber {
+      background: var(--amber); color: #fff;
+      padding: 14px 28px; border-radius: 100px;
+      font-size: 15px;
+    }
+    .btn-amber:hover { background: var(--amber-dk); transform: translateY(-1px); }
+    .btn-amber:disabled { background: var(--border); cursor: not-allowed; transform: none; }
+
+    /* ── HERO ── */
+    #hero {
+      max-width: 1200px; margin: 0 auto;
+      padding: 80px 32px 100px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 64px;
+      align-items: start;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 28px;
+    }
+    .hero-dot {
+      width: 8px; height: 8px;
+      background: var(--amber); border-radius: 50%;
+    }
+    .hero-h1 {
+      font-size: clamp(44px, 5.5vw, 76px);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+    .hero-h1 em {
+      font-style: normal;
+      color: var(--amber);
+    }
+    .hero-sub {
+      font-size: 17px;
+      color: var(--ink-2);
+      max-width: 420px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+    .hero-meta {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--ink-3);
+      margin-top: 16px;
+    }
+    .hero-meta-sep { color: var(--border); }
+
+    /* Hero right panel */
+    .hero-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .hero-panel-header {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-stat-row {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-stat-row:last-child { border-bottom: none; }
+    .hero-stat {
+      flex: 1;
+      padding: 20px 24px;
+      border-right: 1px solid var(--border);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-num {
+      font-size: 28px; font-weight: 900;
+      letter-spacing: -0.04em; color: var(--ink);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero-stat-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .hero-brands {
+      padding: 20px 24px;
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .hero-brand-chip {
+      font-size: 12px; font-weight: 600;
+      color: var(--ink-2);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 5px 10px; border-radius: 100px;
+    }
+
+    /* ── WIZARD (QUIZ) ── */
+    #wizard-section {
+      display: none;
+      min-height: calc(100vh - 64px);
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+    }
+    .wizard-inner {
+      max-width: 760px; margin: 0 auto;
+      padding: 60px 32px 80px;
+    }
+    .wizard-progress-bar-track {
+      height: 2px; background: var(--border);
+      border-radius: 2px; overflow: hidden;
+      margin-bottom: 56px;
+    }
+    .wizard-progress-bar-fill {
+      height: 100%; background: var(--amber);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+    .wizard-step-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .wizard-q-num {
+      font-size: 72px; font-weight: 900;
+      color: var(--border);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin-bottom: -8px;
+      display: block;
+    }
+    .wizard-question {
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .wizard-hint {
+      font-size: 14px; color: var(--ink-3);
+      margin-bottom: 32px;
+    }
+    .wizard-optional {
+      font-size: 14px; font-weight: 400;
+      color: var(--ink-3); letter-spacing: 0;
+      text-transform: none;
+    }
+
+    /* Option tiles */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .option-tile {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: border-color 0.12s, background 0.12s, transform 0.12s;
+    }
+    .option-tile:hover { border-color: var(--amber); transform: translateY(-1px); }
+    .option-tile.selected {
+      border-color: var(--amber);
+      background: var(--amber-lt);
+    }
+    .option-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .option-tile.selected .option-icon {
+      background: var(--amber); border-color: var(--amber);
+    }
+    .option-tile.selected .option-icon i { color: #fff !important; }
+    .option-label {
+      font-size: 15px; font-weight: 600; color: var(--ink);
+      flex: 1; line-height: 1.3;
+    }
+    .option-check {
+      width: 20px; height: 20px; flex-shrink: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.12s;
+    }
+    .option-check.checked {
+      background: var(--amber); border-color: var(--amber);
+    }
+
+    /* Wizard footer */
+    .wizard-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 40px; padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .skip-hint {
+      font-size: 13px; color: var(--ink-3);
+    }
+
+    /* Unit toggle */
+    .unit-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600;
+      color: var(--ink-2);
+      border: 1px solid var(--border);
+      padding: 6px 12px; border-radius: 100px;
+      cursor: pointer; background: transparent;
+      font-family: inherit;
+      margin-bottom: 24px;
+      transition: border-color 0.12s;
+    }
+    .unit-toggle:hover { border-color: var(--amber); }
+
+    /* ── RESULTS ── */
+    #results-section {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+    .results-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 64px 32px 80px;
+    }
+    .results-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 32px; gap: 24px;
+    }
+    .results-h2 {
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 900; letter-spacing: -0.04em;
+      color: var(--ink); line-height: 1.05;
+    }
+    .results-summary-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      margin-bottom: 24px;
+    }
+    .summary-chip {
+      font-size: 12px;
+      color: var(--ink-2);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .summary-chip span { color: var(--ink-3); }
+    .sort-bar {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 28px; flex-wrap: wrap;
+    }
+    .sort-btn {
+      font-size: 12px; font-weight: 600;
+      padding: 7px 14px; border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: transparent; color: var(--ink-2);
+      cursor: pointer; font-family: inherit;
+      transition: all 0.12s;
+    }
+    .sort-btn:hover { border-color: var(--ink-3); }
+    .sort-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+    /* Result cards */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .bottle-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .bottle-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+      border-color: #d4cdc7;
+    }
+    .card-img {
+      height: 200px; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-img img { height: 160px; width: auto; object-fit: contain; }
+    .card-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--amber); color: #fff;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .card-body { padding: 20px; display:flex; flex-direction:column; flex:1; background: var(--bg); }
+    .card-body-top { flex:1; }
+    .card-brand {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--ink-3); margin-bottom: 4px;
+    }
+    .card-name {
+      font-size: 15px; font-weight: 700;
+      color: var(--ink); line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .card-meta {
+      font-size: 12px; color: var(--ink-3);
+      margin-bottom: 14px;
+    }
+    .card-price {
+      font-size: 22px; font-weight: 900;
+      letter-spacing: -0.03em; color: var(--ink);
+    }
+    .card-highlights {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 16px;
+    }
+    .card-tag {
+      font-size: 11px; font-weight: 500;
+      color: var(--ink-2);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 9px; border-radius: 6px;
+    }
+    .card-cta {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 12px;
+      background: var(--ink); color: var(--bg);
+      font-family: inherit; font-size: 14px; font-weight: 700;
+      border: none; border-radius: 10px; cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .card-cta:hover { background: #2E2720; }
+
+    /* ── HOW IT WORKS ── */
+    #how-it-works {
+      border-top: 1px solid var(--border);
+      padding: 100px 32px;
+      background: var(--bg-card);
+    }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 48px;
+    }
+    .section-eyebrow hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+    .hiw-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .hiw-step {
+      padding: 40px 40px 40px 0;
+      border-right: 1px solid var(--border);
+    }
+    .hiw-step:last-child { border-right: none; padding-right: 0; }
+    .hiw-step:not(:first-child) { padding-left: 40px; }
+    .hiw-num {
+      font-size: 48px; font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .hiw-title {
+      font-size: 20px; font-weight: 800;
+      letter-spacing: -0.02em; color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .hiw-desc {
+      font-size: 14px; color: var(--ink-2);
+      line-height: 1.7;
+    }
+
+    /* ── CATALOG ── */
+    #catalog {
+      border-top: 1px solid var(--border);
+      padding: 100px 32px;
+    }
+    .catalog-section-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px; gap: 24px;
+    }
+    .catalog-h2 {
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--border);
+      margin-bottom: 40px;
+    }
+    .catalog-item {
+      background: var(--bg-card);
+      padding: 16px 18px;
+    }
+    .catalog-item-name {
+      font-size: 13px; font-weight: 700;
+      color: var(--ink); margin-bottom: 3px;
+    }
+    .catalog-item-sub {
+      font-size: 11px; color: var(--ink-3);
+    }
+
+    /* ── FAQ ── */
+    #faq {
+      border-top: 1px solid var(--border);
+      padding: 100px 32px;
+      background: var(--bg-card);
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .faq-left { position: sticky; top: 96px; }
+    .faq-h2 {
+      font-size: clamp(28px, 3vw, 38px);
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1.1; margin-bottom: 16px;
+    }
+    .faq-desc { font-size: 15px; color: var(--ink-2); line-height: 1.65; margin-bottom: 32px; }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-summary {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 20px 0;
+      cursor: pointer;
+      font-size: 15px; font-weight: 700;
+      color: var(--ink);
+      list-style: none;
+      user-select: none;
+    }
+    .faq-summary::-webkit-details-marker { display: none; }
+    .faq-summary i { flex-shrink: 0; color: var(--ink-3); transition: transform 0.2s; }
+    details[open] .faq-summary i { transform: rotate(180deg); }
+    .faq-body {
+      font-size: 14px; color: var(--ink-2);
+      line-height: 1.75; padding-bottom: 20px;
+    }
+    .faq-body strong { color: var(--ink); font-weight: 700; }
+
+    /* ── BLOG ── */
+    #blog {
+      border-top: 1px solid var(--border);
+      padding: 100px 32px;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .blog-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      text-decoration: none;
+      transition: border-color 0.15s, transform 0.15s;
+      display: block;
+    }
+    .blog-card:hover { border-color: var(--amber); transform: translateY(-2px); }
+    .blog-cat {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--amber); margin-bottom: 12px;
+    }
+    .blog-title {
+      font-size: 17px; font-weight: 800;
+      letter-spacing: -0.02em; color: var(--ink);
+      line-height: 1.3; margin-bottom: 10px;
+    }
+    .blog-desc { font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 32px;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-note { font-size: 12px; color: var(--ink-3); max-width: 480px; line-height: 1.6; }
+
+    /* ── FEEDBACK ── */
+    .feedback-wrap { position: fixed; bottom: 24px; left: 24px; z-index: 200; }
+    .feedback-panel {
+      display: none;
+      margin-bottom: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+      overflow: hidden;
+      width: 320px;
+    }
+    .feedback-panel.open { display: block; }
+    .feedback-panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px; font-weight: 700;
+    }
+    .feedback-panel-head button { background: none; border: none; cursor: pointer; color: var(--ink-3); padding: 2px; }
+    .feedback-body { padding: 16px 20px; }
+    .feedback-textarea {
+      width: 100%; font-family: inherit; font-size: 13px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 10px 12px; resize: none; outline: none;
+      color: var(--ink); background: var(--bg);
+      transition: border-color 0.12s;
+    }
+    .feedback-textarea:focus { border-color: var(--amber); }
+    .feedback-input {
+      width: 100%; font-family: inherit; font-size: 13px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 9px 12px; outline: none;
+      color: var(--ink); background: var(--bg);
+      margin-top: 8px;
+      transition: border-color 0.12s;
+    }
+    .feedback-input:focus { border-color: var(--amber); }
+    .feedback-submit {
+      margin-top: 10px; width: 100%;
+      background: var(--ink); color: var(--bg);
+      font-family: inherit; font-size: 13px; font-weight: 700;
+      border: none; padding: 11px; border-radius: 10px; cursor: pointer;
+      transition: background 0.12s;
+    }
+    .feedback-submit:hover { background: #2E2720; }
+    .feedback-success { display: none; padding: 28px 20px; text-align: center; }
+    .feedback-success p:first-child { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .feedback-success p:last-child { font-size: 13px; color: var(--ink-3); }
+    .feedback-trigger {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--ink); color: var(--bg);
+      border: none; font-family: inherit; font-size: 13px; font-weight: 600;
+      padding: 10px 18px; border-radius: 100px;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: background 0.12s;
+    }
+    .feedback-trigger:hover { background: #2E2720; }
+
+    /* ── ANIMATIONS ── */
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.5s, transform 0.5s; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .step-anim { animation: stepIn 0.28s ease forwards; }
+    @keyframes stepIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hiw-grid { grid-template-columns: 1fr; }
+      .hiw-step { border-right: none; border-bottom: 1px solid var(--border); padding: 32px 0; }
+      .hiw-step:last-child { border-bottom: none; }
+      .hiw-step:not(:first-child) { padding-left: 0; }
+      .faq-grid { grid-template-columns: 1fr; gap: 40px; }
+      .faq-left { position: static; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .options-grid { grid-template-columns: 1fr; }
+      #hero { padding: 52px 20px 64px; }
+      .wizard-inner { padding: 40px 20px 60px; }
+      .results-inner { padding: 40px 20px 60px; }
+      #how-it-works, #catalog, #faq, #blog { padding: 64px 20px; }
+      .nav-inner { padding: 0 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .catalog-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .results-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 560px) {
+      .hero-h1 { font-size: 38px; }
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="resetQuiz(); return false;">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 28 36" fill="none" width="28" height="36">
+          <!-- cap -->
+          <rect x="8" y="0" width="12" height="6" rx="2" fill="#C47A2E"/>
+          <!-- neck -->
+          <rect x="10" y="6" width="8" height="5" fill="#C47A2E"/>
+          <!-- shoulder -->
+          <path d="M10 11 Q4 16 4 22 L24 22 Q24 16 18 11 Z" fill="#C47A2E"/>
+          <!-- body -->
+          <rect x="4" y="22" width="20" height="12" rx="3" fill="#C47A2E"/>
+          <!-- B letter -->
+          <text x="9" y="32" font-family="Inter,system-ui" font-size="11" font-weight="900" fill="white">B</text>
+        </svg>
+      </div>
+      Bottle Finder
+    </a>
+    <button id="nav-cta" class="btn btn-dark" onclick="startQuiz()">
+      Find My Bottle
+      <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid">
+    <!-- Left: headline -->
+    <div class="fade-in">
+      <div class="hero-eyebrow">
+        <div class="hero-dot"></div>
+        <span class="label">Water Bottle Quiz · Free · 1 minute</span>
+      </div>
+      <h1 class="hero-h1">Find your<br><em>perfect</em><br>water bottle.</h1>
+      <p class="hero-sub">Answer 7 questions about your lifestyle, size preference, material, and budget — we'll match you with the right bottle from 50 curated options.</p>
+      <button class="btn btn-amber" onclick="startQuiz()">
+        Start the Quiz
+        <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
+      </button>
+      <div class="hero-meta">
+        <span>No signup required</span>
+        <span class="hero-meta-sep">·</span>
+        <span>Results in 60 seconds</span>
+        <span class="hero-meta-sep">·</span>
+        <span style="color:var(--ink-2);font-weight:600">8,600+ matched</span>
+      </div>
+    </div>
+
+    <!-- Right: stats panel -->
+    <div class="hero-panel fade-in" style="transition-delay:0.1s">
+      <div class="hero-panel-header">
+        <div class="label">What we cover</div>
+      </div>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="hero-stat-num">50</div>
+          <div class="hero-stat-label">Top-rated bottles</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">7</div>
+          <div class="hero-stat-label">Questions</div>
+        </div>
+      </div>
+      <!-- Bottle silhouettes -->
+      <div style="padding:20px 24px 0;border-top:1px solid var(--border)">
+        <div class="label" style="margin-bottom:14px">50 bottles, every style</div>
+        <div style="display:flex;align-items:flex-end;gap:12px;justify-content:space-around;padding:8px 0 16px">
+          <!-- Slim bottle (Hydro Flask style) -->
+          <svg viewBox="0 0 36 100" width="36" height="100" fill="none">
+            <rect x="13" y="0" width="10" height="7" rx="2" fill="var(--border)"/>
+            <rect x="14" y="7" width="8" height="8" fill="var(--border)"/>
+            <path d="M14 15 Q6 22 6 30 L30 30 Q30 22 22 15 Z" fill="var(--border)"/>
+            <rect x="6" y="30" width="24" height="62" rx="4" fill="var(--border)"/>
+          </svg>
+          <!-- Wide mouth (Nalgene style) -->
+          <svg viewBox="0 0 44 96" width="44" height="96" fill="none">
+            <rect x="10" y="0" width="24" height="8" rx="3" fill="var(--amber)"/>
+            <rect x="12" y="8" width="20" height="6" fill="var(--amber)"/>
+            <path d="M12 14 Q4 20 4 28 L40 28 Q40 20 32 14 Z" fill="var(--amber)"/>
+            <rect x="4" y="28" width="36" height="60" rx="5" fill="var(--amber)"/>
+          </svg>
+          <!-- Tumbler (Stanley style) -->
+          <svg viewBox="0 0 46 110" width="46" height="110" fill="none">
+            <rect x="14" y="0" width="18" height="8" rx="3" fill="var(--border)"/>
+            <path d="M14 8 Q6 16 4 28 L42 28 Q40 16 32 8 Z" fill="var(--border)"/>
+            <path d="M4 28 L6 100 Q6 104 10 104 L36 104 Q40 104 40 100 L42 28 Z" fill="var(--border)"/>
+          </svg>
+          <!-- Slim tall (S'well style) -->
+          <svg viewBox="0 0 30 104" width="30" height="104" fill="none">
+            <rect x="10" y="0" width="10" height="6" rx="2" fill="var(--border)"/>
+            <rect x="11" y="6" width="8" height="7" fill="var(--border)"/>
+            <path d="M11 13 Q5 18 5 24 L25 24 Q25 18 19 13 Z" fill="var(--border)"/>
+            <rect x="5" y="24" width="20" height="72" rx="3" fill="var(--border)"/>
+          </svg>
+          <!-- Jug (HydroJug style) -->
+          <svg viewBox="0 0 50 92" width="50" height="92" fill="none">
+            <rect x="16" y="0" width="18" height="7" rx="2" fill="var(--border)"/>
+            <rect x="17" y="7" width="16" height="6" fill="var(--border)"/>
+            <path d="M17 13 Q6 18 6 26 L44 26 Q44 18 33 13 Z" fill="var(--border)"/>
+            <rect x="6" y="26" width="38" height="58" rx="5" fill="var(--border)"/>
+            <!-- handle -->
+            <path d="M44 30 Q56 30 56 46 Q56 62 44 62" stroke="var(--border)" stroke-width="5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="hero-brands">
+        <div class="label" style="width:100%;margin-bottom:10px">Brands included</div>
+        <span class="hero-brand-chip">Hydro Flask</span>
+        <span class="hero-brand-chip">Stanley</span>
+        <span class="hero-brand-chip">Owala</span>
+        <span class="hero-brand-chip">Yeti</span>
+        <span class="hero-brand-chip">Nalgene</span>
+        <span class="hero-brand-chip">CamelBak</span>
+        <span class="hero-brand-chip">Klean Kanteen</span>
+        <span class="hero-brand-chip">Brita</span>
+        <span class="hero-brand-chip">LifeStraw</span>
+        <span class="hero-brand-chip">+ more</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WIZARD -->
+<section id="wizard-section">
+  <div class="wizard-inner">
+    <div class="wizard-progress-bar-track">
+      <div id="progress-bar" class="wizard-progress-bar-fill" style="width:14.2%"></div>
+    </div>
+    <div id="step-container"></div>
+    <div class="wizard-footer">
+      <button id="back-btn" class="btn btn-ghost" onclick="prevStep()" style="display:none">
+        <i data-lucide="arrow-left" style="width:14px;height:14px"></i>
+        Back
+      </button>
+      <div id="skip-hint" class="skip-hint" style="display:none">No preference? Click Next to skip.</div>
+      <button id="next-btn" class="btn btn-amber" onclick="nextStep()" disabled style="margin-left:auto">
+        <span id="next-label">Next</span>
+        <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results-section">
+  <div class="results-inner">
+    <div class="results-header fade-in">
+      <div>
+        <div class="label" style="margin-bottom:10px;color:var(--amber)">Your matches</div>
+        <h2 class="results-h2">Here are your<br>best bottles.</h2>
+      </div>
+      <button onclick="resetQuiz()" class="btn btn-ghost" style="flex-shrink:0">
+        <i data-lucide="refresh-cw" style="width:13px;height:13px"></i>
+        Start Over
+      </button>
+    </div>
+    <div id="results-summary"></div>
+    <div id="results-controls"></div>
+    <div id="results-grid" class="results-grid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-inner">
+    <div class="section-eyebrow fade-in">
+      <span class="label">How it works</span>
+      <hr>
+    </div>
+    <div class="hiw-grid">
+      <div class="hiw-step fade-in">
+        <div class="hiw-num">01</div>
+        <h3 class="hiw-title">Answer 7 questions</h3>
+        <p class="hiw-desc">Tell us where you'll use it, how much you drink, whether you need insulation, your preferred lid style, material, and budget. Takes about a minute.</p>
+      </div>
+      <div class="hiw-step fade-in" style="transition-delay:0.08s">
+        <div class="hiw-num">02</div>
+        <h3 class="hiw-title">We score 50 bottles</h3>
+        <p class="hiw-desc">Our algorithm scores every bottle against your answers — factoring in size, temperature retention, features, and price tier. Ranked by fit.</p>
+      </div>
+      <div class="hiw-step fade-in" style="transition-delay:0.16s">
+        <div class="hiw-num">03</div>
+        <h3 class="hiw-title">Get your matches</h3>
+        <p class="hiw-desc">See your top picks with prices, key features, and a direct link to buy on Amazon. Sort by price or size — no extra searching needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section id="catalog">
+  <div class="section-inner">
+    <div class="catalog-section-header fade-in">
+      <h2 class="catalog-h2">50 top-rated bottles<br>in our database.</h2>
+      <button onclick="startQuiz()" class="btn btn-dark" style="flex-shrink:0">
+        Find mine <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+      </button>
+    </div>
+    <div class="catalog-grid fade-in">
+      <div class="catalog-item"><p class="catalog-item-name">Hydro Flask 32oz</p><p class="catalog-item-sub">Insulated · Wide mouth</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Stanley Quencher 40oz</p><p class="catalog-item-sub">Insulated · Straw lid</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Owala FreeSip 32oz</p><p class="catalog-item-sub">Insulated · Flip straw</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Yeti Rambler 36oz</p><p class="catalog-item-sub">Insulated · Chug cap</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Nalgene 32oz</p><p class="catalog-item-sub">BPA-free plastic · Budget</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">CamelBak Chute 25oz</p><p class="catalog-item-sub">Insulated · Easy pour</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Brita Filter Bottle 36oz</p><p class="catalog-item-sub">Filtered · Plastic</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">LifeStraw Go 22oz</p><p class="catalog-item-sub">Filtered · Tritan</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Contigo Autoseal 24oz</p><p class="catalog-item-sub">Insulated · Autoseal</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Klean Kanteen 27oz</p><p class="catalog-item-sub">Insulated · Eco-friendly</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">S'well 25oz</p><p class="catalog-item-sub">Insulated · Stylish</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Takeya Actives 32oz</p><p class="catalog-item-sub">Insulated · Spout lid</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">bkr Little 16oz Glass</p><p class="catalog-item-sub">Glass · Silicone sleeve</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Lifefactory 22oz Glass</p><p class="catalog-item-sub">Glass · Flip cap</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Hydro Flask Kids 12oz</p><p class="catalog-item-sub">Insulated · Kids</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">CamelBak eddy+ 25oz</p><p class="catalog-item-sub">BPA-free · Bite straw</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Nalgene Silo 48oz</p><p class="catalog-item-sub">BPA-free · XL</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">HydroJug Pro 73oz</p><p class="catalog-item-sub">BPA-free · Half gallon</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">BlenderBottle Classic 28oz</p><p class="catalog-item-sub">Shaker · Gym</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Hydro Flask Trail 32oz</p><p class="catalog-item-sub">Insulated · Lightweight</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Yeti Rambler 64oz</p><p class="catalog-item-sub">Insulated · XL jug</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Simple Modern Summit 32oz</p><p class="catalog-item-sub">Insulated · Budget</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Iron Flask 32oz</p><p class="catalog-item-sub">Insulated · 3 lids</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Thermos Funtainer 16oz</p><p class="catalog-item-sub">Insulated · Kids school</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Reduce Hydrate Pro 24oz</p><p class="catalog-item-sub">Insulated · Straw lid</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Zojirushi SM-VA 24oz</p><p class="catalog-item-sub">Insulated · Hot drinks</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Corkcicle Canteen 25oz</p><p class="catalog-item-sub">Insulated · Wide spout</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">MiiR Narrow 23oz</p><p class="catalog-item-sub">Insulated · Giveback</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Fifty/Fifty 34oz</p><p class="catalog-item-sub">Insulated · Wide mouth</p></div>
+      <div class="catalog-item"><p class="catalog-item-name">Ello Syndicate 20oz</p><p class="catalog-item-sub">Glass · One-touch lid</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="faq-grid">
+      <div class="faq-left fade-in">
+        <div class="label" style="margin-bottom:16px">FAQ</div>
+        <h2 class="faq-h2">Common questions answered.</h2>
+        <p class="faq-desc">Everything you need to know about choosing a water bottle — or just take the quiz.</p>
+        <button onclick="startQuiz()" class="btn btn-dark">
+          Take the quiz <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+        </button>
+      </div>
+      <div class="faq-list fade-in" style="transition-delay:0.1s">
+        <details class="faq-item">
+          <summary class="faq-summary">What water bottle should I get? <i data-lucide="chevron-down" style="width:16px;height:16px"></i></summary>
+          <p class="faq-body">It depends on how you use it. For everyday carry, the Owala FreeSip or Hydro Flask 32oz are top picks. For commuting, the Stanley Quencher 40oz is a fan favorite. For hiking, the Nalgene 32oz or Hydro Flask Trail Series are hard to beat. Our 7-question quiz finds your best match in under a minute.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-summary">What is the best insulated water bottle? <i data-lucide="chevron-down" style="width:16px;height:16px"></i></summary>
+          <p class="faq-body">Top insulated picks: <strong>Hydro Flask Wide Mouth 32oz</strong> (24hr cold, 12hr hot), <strong>Stanley Quencher 40oz</strong> (all-day cold, great handle), <strong>Yeti Rambler 36oz</strong> (most durable), and <strong>Owala FreeSip 32oz</strong> (insulated with built-in straw). All use double-wall vacuum insulation.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-summary">Hydro Flask vs Stanley — which is better? <i data-lucide="chevron-down" style="width:16px;height:16px"></i></summary>
+          <p class="faq-body"><strong>Hydro Flask</strong> is lighter and better for gym, hiking, and active use. <strong>Stanley Quencher</strong> is wider, holds more (30–40oz), and is better for commuting or desk use. Both keep drinks cold all day. Choose Hydro Flask for activity; choose Stanley for lifestyle sipping.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-summary">What size water bottle should I get? <i data-lucide="chevron-down" style="width:16px;height:16px"></i></summary>
+          <p class="faq-body"><strong>Small (up to 16oz)</strong> — great for kids or short trips. <strong>Medium (20–27oz)</strong> — ideal for everyday carry. <strong>Large (28–36oz)</strong> — best for gym or hiking. <strong>XL (40oz+)</strong> — for all-day hydration without refilling.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-summary">Stainless steel or plastic — which is better? <i data-lucide="chevron-down" style="width:16px;height:16px"></i></summary>
+          <p class="faq-body"><strong>Stainless steel</strong> is more durable, doesn't retain flavors, can be vacuum-insulated, and is better for long-term use. <strong>BPA-free plastic</strong> is lighter and cheaper — great for kids or budget picks. <strong>Glass</strong> offers the purest taste but is heavier and breakable.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-summary">Best water bottle for the gym? <i data-lucide="chevron-down" style="width:16px;height:16px"></i></summary>
+          <p class="faq-body">Top gym picks: <strong>Owala FreeSip 32oz</strong> (insulated, flip straw, easy one-hand use), <strong>Takeya Actives 32oz</strong> (leak-proof spout lid), <strong>BlenderBottle Classic 28oz</strong> (perfect for protein shakes), and <strong>Hydro Flask Wide Mouth 32oz</strong> (durable, keeps water cold).</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-summary">Best water bottle for hiking? <i data-lucide="chevron-down" style="width:16px;height:16px"></i></summary>
+          <p class="faq-body">For hiking: <strong>Nalgene 32oz</strong> (unbreakable classic), <strong>LifeStraw Go 22oz</strong> (built-in filter for trail water), and <strong>Hydro Flask Trail 32oz</strong> (lightweight, insulated). If weight matters, Nalgene wins. If you need a filter, LifeStraw Go is unmatched.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-inner">
+    <div class="section-eyebrow fade-in">
+      <span class="label">Guides</span>
+      <hr>
+    </div>
+    <div class="blog-grid">
+      <a href="/blog-hydro-flask-vs-stanley.html" class="blog-card fade-in">
+        <p class="blog-cat">Comparison</p>
+        <h3 class="blog-title">Hydro Flask vs Stanley Quencher — Which Should You Get?</h3>
+        <p class="blog-desc">Side-by-side comparison of price, insulation, weight, and best use cases.</p>
+      </a>
+      <a href="/blog-best-hiking-water-bottles.html" class="blog-card fade-in" style="transition-delay:0.08s">
+        <p class="blog-cat">Buyer's Guide</p>
+        <h3 class="blog-title">Best Water Bottles for Hiking in 2025</h3>
+        <p class="blog-desc">Lightweight, durable, trail-tested picks — from Nalgene to Hydro Flask to LifeStraw.</p>
+      </a>
+      <a href="/blog-best-water-bottles-under-30.html" class="blog-card fade-in" style="transition-delay:0.16s">
+        <p class="blog-cat">Budget Guide</p>
+        <h3 class="blog-title">Best Water Bottles Under $30 in 2025</h3>
+        <p class="blog-desc">Budget picks that don't cut corners — Simple Modern, Nalgene, Iron Flask, and more.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="#" class="nav-logo" style="text-decoration:none" onclick="resetQuiz();return false;">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 28 36" fill="none" width="28" height="36">
+          <rect x="8" y="0" width="12" height="6" rx="2" fill="#C47A2E"/>
+          <rect x="10" y="6" width="8" height="5" fill="#C47A2E"/>
+          <path d="M10 11 Q4 16 4 22 L24 22 Q24 16 18 11 Z" fill="#C47A2E"/>
+          <rect x="4" y="22" width="20" height="12" rx="3" fill="#C47A2E"/>
+          <text x="9" y="32" font-family="Inter,system-ui" font-size="11" font-weight="900" fill="white">B</text>
+        </svg>
+      </div>
+      Bottle Finder
+    </a>
+    <p class="footer-note">Bottle Finder participates in affiliate programs including Amazon Associates. We earn a small commission when you purchase through our links, at no extra cost to you.</p>
+  </div>
+</footer>
+
+<!-- FEEDBACK -->
+<div class="feedback-wrap">
+  <div id="feedback-panel" class="feedback-panel">
+    <div class="feedback-panel-head">
+      <span>Share feedback</span>
+      <button onclick="closeFeedback()"><i data-lucide="x" style="width:15px;height:15px"></i></button>
+    </div>
+    <div id="fb-form" class="feedback-body">
+      <textarea id="fb-message" class="feedback-textarea" rows="3" placeholder="Suggestions, issues, anything…"></textarea>
+      <input id="fb-email" class="feedback-input" type="email" placeholder="Email (optional)" />
+      <p id="fb-error" style="font-size:12px;color:#c0392b;margin-top:6px;display:none">Please enter a message first.</p>
+      <button class="feedback-submit" onclick="submitFeedback()">Send</button>
+    </div>
+    <div id="fb-success" class="feedback-success">
+      <p>Thanks for your feedback!</p>
+      <p>We really appreciate it.</p>
+    </div>
+  </div>
+  <button class="feedback-trigger" onclick="toggleFeedback()">
+    <i data-lucide="message-circle" style="width:15px;height:15px"></i>
+    Feedback
+  </button>
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────
+
+const AVOID_CHECKS = {
+  straw:     b => b.features.includes('straw'),
+  handle:    b => b.features.includes('handle'),
+  wide:      b => b.features.includes('wide'),
+  filter:    b => b.features.includes('filter'),
+  plastic:   b => b.material === 'plastic',
+  glass:     b => b.material === 'glass',
+  insulated: b => b.insulated,
+  bulky:     b => b.sizeTier === 'xl',
+};
+
+const QUESTIONS = [
+  { id:'use', icon:'map-pin', question:'Where will you use it most?', hint:'Select all that apply', multiSelect:true, options:[
+    { value:'everyday', label:'Everyday carry',    icon:'briefcase' },
+    { value:'gym',      label:'Gym & sports',      icon:'dumbbell' },
+    { value:'outdoor',  label:'Hiking & outdoors', icon:'mountain' },
+    { value:'office',   label:'Office & desk',     icon:'monitor' },
+    { value:'travel',   label:'Travel',             icon:'plane' },
+    { value:'kids',     label:'Kids',               icon:'baby' },
+  ]},
+  { id:'size', icon:'ruler', question:'What size are you looking for?', showUnit:true, options:[
+    { value:'small',  labelOz:'Small  (up to 16 oz)',  labelMl:'Small  (up to 473 ml)' ,  icon:'minus-circle' },
+    { value:'medium', labelOz:'Medium (20 – 27 oz)',   labelMl:'Medium (591 – 800 ml)',    icon:'circle' },
+    { value:'large',  labelOz:'Large  (28 – 36 oz)',   labelMl:'Large  (830 – 1065 ml)',   icon:'plus-circle' },
+    { value:'xl',     labelOz:'XL     (40 oz+)',       labelMl:'XL     (1183+ ml)',         icon:'maximize-2' },
+  ]},
+  { id:'temp', icon:'thermometer', question:'Temperature needs?', options:[
+    { value:'cold', label:'Keep drinks cold', icon:'snowflake' },
+    { value:'hot',  label:'Keep drinks hot',  icon:'flame' },
+    { value:'both', label:'Both hot & cold',  icon:'repeat' },
+    { value:'none', label:'No preference',    icon:'minus' },
+  ]},
+  { id:'material', icon:'layers', question:'Material preference?', options:[
+    { value:'steel',   label:'Stainless steel',  icon:'zap' },
+    { value:'plastic', label:'BPA-free plastic', icon:'droplet' },
+    { value:'glass',   label:'Glass',             icon:'gem' },
+    { value:'any',     label:'No preference',     icon:'check' },
+  ]},
+  { id:'features', icon:'star', question:'Must-have features?', hint:'Select all that matter — skip if no preference', multiSelect:true, optional:true, options:[
+    { value:'filter', label:'Built-in filter',   icon:'filter' },
+    { value:'straw',  label:'Straw / spout lid', icon:'git-branch' },
+    { value:'wide',   label:'Wide mouth',         icon:'circle' },
+    { value:'handle', label:'Carry handle',       icon:'anchor' },
+    { value:'light',  label:'Lightweight',        icon:'feather' },
+  ]},
+  { id:'avoid', icon:'x-circle', question:"Anything you'd rather not have?", hint:'Optional — skip freely', multiSelect:true, optional:true, options:[
+    { value:'straw',     label:'Straw or spout lid',   icon:'git-branch' },
+    { value:'handle',    label:'Carry handle',          icon:'anchor' },
+    { value:'wide',      label:'Wide mouth opening',    icon:'circle' },
+    { value:'filter',    label:'Built-in filter',       icon:'filter' },
+    { value:'plastic',   label:'Plastic material',      icon:'droplet' },
+    { value:'glass',     label:'Glass material',        icon:'gem' },
+    { value:'insulated', label:'Insulated / heavy',     icon:'thermometer' },
+    { value:'bulky',     label:'Extra large size',      icon:'maximize-2' },
+  ]},
+  { id:'budget', icon:'dollar-sign', question:"What's your budget?", hint:'Select all that apply', multiSelect:true, options:[
+    { value:'low',     label:'Under $20', icon:'tag' },
+    { value:'mid',     label:'$20 – $40', icon:'tag' },
+    { value:'high',    label:'$40 – $60', icon:'tag' },
+    { value:'premium', label:'$60+',      icon:'tag' },
+  ]},
+];
+
+const BOTTLES = [
+  { id:'hydro-flask-32', name:'Hydro Flask 32oz Wide Mouth', brand:'Hydro Flask', price:50, priceTier:'high', oz:32, sizeTier:'large', material:'steel', insulated:true, features:['wide','handle'], uses:['outdoor','gym','everyday'], tempTiers:['cold','hot','both'], highlight:['Wide mouth','Double-wall insulated','Carry handle'], color:'#94a3b8', url:'https://www.amazon.com/dp/B0FJZZCD9Y?tag=bottlefinders-20' },
+  { id:'stanley-quencher-40', name:'Stanley Quencher 40oz', brand:'Stanley', price:40, priceTier:'mid', oz:40, sizeTier:'xl', material:'steel', insulated:true, features:['straw','handle'], uses:['everyday','travel','office'], tempTiers:['cold','hot','both'], highlight:['Straw lid','Sturdy handle','40oz capacity'], color:'#6b7280', url:'https://www.amazon.com/dp/B0CP9Y3152?tag=bottlefinders-20' },
+  { id:'owala-freesip-32', name:'Owala FreeSip 32oz', brand:'Owala', price:35, priceTier:'mid', oz:32, sizeTier:'large', material:'steel', insulated:true, features:['straw','light'], uses:['everyday','gym'], tempTiers:['cold','both'], highlight:['Dual straw & sip','Leak-proof lid','Lightweight'], color:'#7c3aed', url:'https://www.amazon.com/dp/B085DVNHHK?tag=bottlefinders-20' },
+  { id:'yeti-rambler-36', name:'Yeti Rambler 36oz', brand:'Yeti', price:55, priceTier:'high', oz:36, sizeTier:'large', material:'steel', insulated:true, features:['wide','handle'], uses:['outdoor','gym','travel'], tempTiers:['cold','hot','both'], highlight:['18/8 stainless steel','Wide mouth','Rugged & durable'], color:'#374151', url:'https://www.amazon.com/dp/B0842RYHVB?tag=bottlefinders-20' },
+  { id:'nalgene-32', name:'Nalgene 32oz Wide Mouth', brand:'Nalgene', price:12, priceTier:'low', oz:32, sizeTier:'large', material:'plastic', insulated:false, features:['wide','light'], uses:['outdoor','gym','everyday'], tempTiers:['none'], highlight:['Ultra-lightweight','Wide mouth','Made in USA'], color:'#2563eb', url:'https://www.amazon.com/dp/B0994LVB79?tag=bottlefinders-20' },
+  { id:'camelbak-chute-25', name:'CamelBak Chute Mag 25oz', brand:'CamelBak', price:20, priceTier:'low', oz:25, sizeTier:'medium', material:'plastic', insulated:false, features:['light','wide'], uses:['gym','everyday','outdoor'], tempTiers:['cold','none'], highlight:['Magnetic lid','Lightweight','Ergonomic grip'], color:'#059669', url:'https://www.amazon.com/dp/B0BBS8BTJZ?tag=bottlefinders-20' },
+  { id:'brita-36-filter', name:'Brita 36oz Filter Bottle', brand:'Brita', price:25, priceTier:'mid', oz:36, sizeTier:'large', material:'plastic', insulated:false, features:['filter','straw'], uses:['everyday','office','travel'], tempTiers:['cold','none'], highlight:['Built-in filter','Straw lid','Replaces 1,800 bottles/yr'], color:'#0284c7', url:'https://www.amazon.com/dp/B08FSBJ22H?tag=bottlefinders-20' },
+  { id:'lifestraw-go-22', name:'LifeStraw Go 22oz', brand:'LifeStraw', price:45, priceTier:'high', oz:22, sizeTier:'medium', material:'plastic', insulated:false, features:['filter','straw'], uses:['outdoor','travel'], tempTiers:['cold','none'], highlight:['2-stage filtration','Removes bacteria & parasites','Travel & hiking'], color:'#16a34a', url:'https://www.amazon.com/dp/B0BY3FMQ36?tag=bottlefinders-20' },
+  { id:'contigo-autoseal-24', name:'Contigo Autoseal 24oz', brand:'Contigo', price:18, priceTier:'low', oz:24, sizeTier:'medium', material:'plastic', insulated:true, features:['straw','light'], uses:['office','everyday'], tempTiers:['cold','hot','both'], highlight:['Autoseal lid','Spill-proof','One-handed drinking'], color:'#dc2626', url:'https://www.amazon.com/dp/B08RTWGWFD?tag=bottlefinders-20' },
+  { id:'klean-kanteen-27', name:'Klean Kanteen 27oz', brand:'Klean Kanteen', price:30, priceTier:'mid', oz:27, sizeTier:'medium', material:'steel', insulated:true, features:['light','wide'], uses:['everyday','outdoor'], tempTiers:['cold','hot','both'], highlight:['Climate Neutral certified','Insulated','Eco-focused'], color:'#ca8a04', url:'https://www.amazon.com/dp/B0DK9NS2WR?tag=bottlefinders-20' },
+  { id:'swell-25', name:"S'well 25oz", brand:"S'well", price:45, priceTier:'high', oz:25, sizeTier:'medium', material:'steel', insulated:true, features:['light'], uses:['office','travel','everyday'], tempTiers:['cold','hot','both'], highlight:['Sleek slim design','Triple-wall insulated','24hr cold / 12hr hot'], color:'#7c3aed', url:'https://www.amazon.com/dp/B07V1J8KHK?tag=bottlefinders-20' },
+  { id:'takeya-actives-32', name:'Takeya Actives 32oz', brand:'Takeya', price:35, priceTier:'mid', oz:32, sizeTier:'large', material:'steel', insulated:true, features:['straw','handle'], uses:['gym','outdoor','everyday'], tempTiers:['cold','both'], highlight:['Spout lid','Carry handle','24hr cold'], color:'#0f766e', url:'https://www.amazon.com/dp/B072QRW9KH?tag=bottlefinders-20' },
+  { id:'bkr-little-16', name:'bkr Little Smooth 16oz', brand:'bkr', price:42, priceTier:'high', oz:16, sizeTier:'small', material:'glass', insulated:false, features:['light'], uses:['everyday','office','travel'], tempTiers:['cold','none'], highlight:['Pure glass taste','Silicone sleeve','Cup holder fit'], color:'#a3a3a3', url:'https://www.amazon.com/bkr-Bottle-Silicone-BPA-Free-Dishwasher/dp/B0085F8XNI?tag=bottlefinders-20' },
+  { id:'lifefactory-22-glass', name:'Lifefactory 22oz Glass', brand:'Lifefactory', price:34, priceTier:'mid', oz:22, sizeTier:'medium', material:'glass', insulated:false, features:['wide','light'], uses:['everyday','office','travel'], tempTiers:['cold','none'], highlight:['French glass','Silicone sleeve','Classic screw cap'], color:'#6b7280', url:'https://www.amazon.com/Lifefactory-22-Ounce-BPA-Free-Protective-Silicone/dp/B07BSXLDCC?tag=bottlefinders-20' },
+  { id:'hydro-flask-12-kids', name:'Hydro Flask 12oz Kids', brand:'Hydro Flask', price:17, priceTier:'low', oz:12, sizeTier:'small', material:'steel', insulated:true, features:['straw','wide'], uses:['kids','everyday','outdoor'], tempTiers:['cold','both'], highlight:['Kids straw lid','Rubber boot','Vacuum insulated'], color:'#7c3aed', url:'https://www.amazon.com/Hydro-Flask-Kids-Water-Bottle/dp/B08B2BKWR9?tag=bottlefinders-20' },
+  { id:'camelbak-eddy-plus-25', name:'CamelBak eddy+ 25oz', brand:'CamelBak', price:34, priceTier:'mid', oz:25, sizeTier:'medium', material:'plastic', insulated:false, features:['straw'], uses:['everyday','gym','kids'], tempTiers:['cold','none'], highlight:['Bite valve straw','Spill-proof lid','BPA-free Tritan'], color:'#0891b2', url:'https://www.amazon.com/CamelBak-Eddy-Free-Water-Bottle/dp/B0978625TT?tag=bottlefinders-20' },
+  { id:'nalgene-silo-48', name:'Nalgene 48oz Silo', brand:'Nalgene', price:19, priceTier:'low', oz:48, sizeTier:'xl', material:'plastic', insulated:false, features:['wide','light'], uses:['outdoor','gym','everyday'], tempTiers:['none'], highlight:['48oz capacity','Wide mouth','Made in USA'], color:'#2563eb', url:'https://www.amazon.com/Nalgene-48-Ounce-Tritan-Mouth-Bottle/dp/B0794F3XQQ?tag=bottlefinders-20' },
+  { id:'hydrojug-pro-73', name:'HydroJug Pro Jug 73oz', brand:'HydroJug', price:13, priceTier:'low', oz:73, sizeTier:'xl', material:'plastic', insulated:false, features:['handle'], uses:['gym','everyday','outdoor'], tempTiers:['cold','none'], highlight:['Half gallon jug','Carry handle','BPA-free plastic'], color:'#16a34a', url:'https://www.amazon.com/HydroJug-Half-Gallon-Water-Bottle/dp/B0D527TDFH?tag=bottlefinders-20' },
+  { id:'blenderbottle-classic-28', name:'BlenderBottle Classic 28oz', brand:'BlenderBottle', price:10, priceTier:'low', oz:28, sizeTier:'medium', material:'plastic', insulated:false, features:['wide'], uses:['gym','everyday'], tempTiers:['cold','none'], highlight:['Shaker ball mixing','Protein shake ready','Wide mouth'], color:'#374151', url:'https://www.amazon.com/BlenderBottle-Classic-Shaker-Bottle-28-Ounce/dp/B01LX4GTDW?tag=bottlefinders-20' },
+  { id:'hydro-flask-32-trail', name:'Hydro Flask 32oz Trail Series', brand:'Hydro Flask', price:39, priceTier:'mid', oz:32, sizeTier:'large', material:'steel', insulated:true, features:['light'], uses:['outdoor','travel','everyday'], tempTiers:['cold','hot','both'], highlight:['25% lighter','Vacuum insulated','Trail-ready'], color:'#94a3b8', url:'https://www.amazon.com/Hydro-Flask-Lightweight-Stainless-Insulated/dp/B08WWSVRZK?tag=bottlefinders-20' },
+  { id:'yeti-rambler-64', name:'Yeti Rambler 64oz Bottle', brand:'Yeti', price:65, priceTier:'high', oz:64, sizeTier:'xl', material:'steel', insulated:true, features:['wide','handle'], uses:['outdoor','gym','travel'], tempTiers:['cold','hot','both'], highlight:['64oz capacity','Chug cap','Rugged & durable'], color:'#374151', url:'https://www.amazon.com/YETI-Rambler-Bottle-Insulated-Stainless/dp/B098Z97297?tag=bottlefinders-20' },
+  { id:'simple-modern-summit-32', name:'Simple Modern Summit 32oz', brand:'Simple Modern', price:26, priceTier:'low', oz:32, sizeTier:'large', material:'steel', insulated:true, features:['straw','wide'], uses:['everyday','gym','travel'], tempTiers:['cold','hot','both'], highlight:['Budget insulated','Straw & chug lids','Double wall'], color:'#a16207', url:'https://www.amazon.com/dp/B0B29MKHQM?tag=bottlefinders-20' },
+  { id:'iron-flask-32', name:'Iron Flask 32oz', brand:'Iron Flask', price:30, priceTier:'mid', oz:32, sizeTier:'large', material:'steel', insulated:true, features:['wide'], uses:['everyday','gym','outdoor'], tempTiers:['cold','hot','both'], highlight:['3 lids included','24hr cold','Budget steel'], color:'#0f766e', url:'https://www.amazon.com/dp/B08FSBJ22H?tag=bottlefinders-20' },
+  { id:'thermos-funtainer-16', name:'Thermos Funtainer 16oz', brand:'Thermos', price:18, priceTier:'low', oz:16, sizeTier:'small', material:'steel', insulated:true, features:['straw'], uses:['kids','everyday'], tempTiers:['cold','both'], highlight:['Kids vacuum insulated','Fun designs','Keeps cold 12hrs'], color:'#7c3aed', url:'https://www.amazon.com/dp/B0013NWJP2?tag=bottlefinders-20' },
+  { id:'reduce-hydrate-pro-24', name:'Reduce Hydrate Pro 24oz', brand:'Reduce', price:22, priceTier:'low', oz:24, sizeTier:'medium', material:'steel', insulated:true, features:['straw'], uses:['everyday','gym'], tempTiers:['cold','both'], highlight:['Insulated straw lid','Budget steel','24hr cold'], color:'#374151', url:'https://www.amazon.com/dp/B07FK9P3H5?tag=bottlefinders-20' },
+  { id:'zojirushi-sm-va-24', name:'Zojirushi SM-VA 24oz', brand:'Zojirushi', price:38, priceTier:'mid', oz:24, sizeTier:'medium', material:'steel', insulated:true, features:['light'], uses:['office','travel','everyday'], tempTiers:['cold','hot','both'], highlight:['Flip-open lid','Zero-leak','Premium Japanese quality'], color:'#ea580c', url:'https://www.amazon.com/dp/B074L3SRMH?tag=bottlefinders-20' },
+  { id:'corkcicle-canteen-25', name:'Corkcicle Canteen 25oz', brand:'Corkcicle', price:35, priceTier:'mid', oz:25, sizeTier:'medium', material:'steel', insulated:true, features:['wide'], uses:['everyday','office','travel'], tempTiers:['cold','hot','both'], highlight:['Triple insulated','Wide mouth','Flat side grip'], color:'#c2410c', url:'https://www.amazon.com/dp/B00F3JKBCY?tag=bottlefinders-20' },
+  { id:'miir-narrow-23', name:'MiiR Narrow 23oz', brand:'MiiR', price:35, priceTier:'mid', oz:23, sizeTier:'medium', material:'steel', insulated:true, features:['light'], uses:['everyday','outdoor','travel'], tempTiers:['cold','hot','both'], highlight:['Slim design','Giveback brand','Leakproof'], color:'#6b7280', url:'https://www.amazon.com/dp/B00MPDPK5M?tag=bottlefinders-20' },
+  { id:'fifty-fifty-34', name:'Fifty/Fifty 34oz', brand:'Fifty/Fifty', price:28, priceTier:'mid', oz:34, sizeTier:'large', material:'steel', insulated:true, features:['wide'], uses:['outdoor','gym','everyday'], tempTiers:['cold','hot','both'], highlight:['Wide mouth','Vacuum insulated','Good value'], color:'#374151', url:'https://www.amazon.com/dp/B0085F8XNI?tag=bottlefinders-20' },
+  { id:'ello-syndicate-20', name:'Ello Syndicate 20oz Glass', brand:'Ello', price:14, priceTier:'low', oz:20, sizeTier:'medium', material:'glass', insulated:false, features:['light'], uses:['everyday','office'], tempTiers:['cold','none'], highlight:['Pure glass taste','One-touch lid','Budget glass pick'], color:'#0891b2', url:'https://www.amazon.com/dp/B09D5MXQW4?tag=bottlefinders-20' },
+  { id:'camelbak-podium-24', name:'CamelBak Podium 24oz', brand:'CamelBak', price:16, priceTier:'low', oz:24, sizeTier:'medium', material:'plastic', insulated:false, features:['straw','light'], uses:['gym','outdoor','everyday'], tempTiers:['cold','none'], highlight:['Squeeze & sip','Self-sealing straw','BPA-free'], color:'#059669', url:'https://www.amazon.com/dp/B0BBS8BTJZ?tag=bottlefinders-20' },
+  { id:'thermos-funtainer-12-straw', name:'Thermos FUNtainer 12oz Straw Bottle', brand:'Thermos', price:17, priceTier:'low', oz:12, sizeTier:'small', material:'steel', insulated:true, features:['straw','light'], uses:['kids','everyday','outdoor'], tempTiers:['cold','both'], highlight:['Kids push-button straw','Vacuum insulated','12hr cold'], color:'#2563eb', url:'https://www.amazon.com/dp/B00DAPQT3O?tag=bottlefinders-20' },
+  { id:'larq-purvis-17', name:'LARQ PureVis Bottle 17oz', brand:'LARQ', price:98, priceTier:'premium', oz:17, sizeTier:'small', material:'steel', insulated:true, features:['filter','light'], uses:['travel','everyday','office'], tempTiers:['cold','hot','both'], highlight:['UV-C self-cleaning','Insulated','Purifies water'], color:'#0284c7', url:'https://www.amazon.com/dp/B07NLFQTHM?tag=bottlefinders-20' },
+  { id:'zulu-goals-64', name:'ZULU Goals 64oz Half Gallon', brand:'ZULU', price:20, priceTier:'low', oz:64, sizeTier:'xl', material:'plastic', insulated:false, features:['straw','handle','light'], uses:['gym','everyday','outdoor'], tempTiers:['cold','none'], highlight:['Half gallon','Time markers','Leak-proof straw lid'], color:'#16a34a', url:'https://www.amazon.com/dp/B09D5MXQW4?tag=bottlefinders-20' },
+  { id:'nalgene-sustain-32', name:'Nalgene Sustain 32oz', brand:'Nalgene', price:14, priceTier:'low', oz:32, sizeTier:'large', material:'plastic', insulated:false, features:['wide','light'], uses:['outdoor','gym','everyday'], tempTiers:['none'], highlight:['50% recycled plastic','BPA & BPS-free','Made in USA'], color:'#059669', url:'https://www.amazon.com/dp/B09GTV79HK?tag=bottlefinders-20' },
+  { id:'yeti-rambler-mug-14', name:'YETI Rambler 14oz Mug', brand:'Yeti', price:35, priceTier:'mid', oz:14, sizeTier:'small', material:'steel', insulated:true, features:['light','handle'], uses:['office','travel','everyday'], tempTiers:['cold','hot','both'], highlight:['MagSlider lid','Double-wall insulated','Cup holder fit'], color:'#374151', url:'https://www.amazon.com/dp/B07SGPHFP5?tag=bottlefinders-20' },
+  { id:'zojirushi-mug-16', name:'Zojirushi 16oz Travel Mug', brand:'Zojirushi', price:38, priceTier:'mid', oz:16, sizeTier:'small', material:'steel', insulated:true, features:['light'], uses:['office','travel','everyday'], tempTiers:['cold','hot','both'], highlight:['Flip-open one-touch lid','Zero-leak','Premium Japanese quality'], color:'#ea580c', url:'https://www.amazon.com/dp/B074L3SRMH?tag=bottlefinders-20' },
+  { id:'mira-17', name:'MIRA 17oz Stainless Bottle', brand:'MIRA', price:22, priceTier:'low', oz:17, sizeTier:'small', material:'steel', insulated:true, features:['light'], uses:['everyday','gym','travel'], tempTiers:['cold','hot','both'], highlight:['24hr cold / 12hr hot','Cola silhouette','Budget steel pick'], color:'#db2777', url:'https://www.amazon.com/dp/B071NGXW49?tag=bottlefinders-20' },
+  { id:'healthy-human-21', name:'Healthy Human 21oz Stein', brand:'Healthy Human', price:28, priceTier:'mid', oz:21, sizeTier:'medium', material:'steel', insulated:true, features:['light'], uses:['everyday','travel','outdoor'], tempTiers:['cold','hot','both'], highlight:['Eco-certified','24hr cold','Funds clean water'], color:'#b45309', url:'https://www.amazon.com/dp/B075FXL246?tag=bottlefinders-20' },
+  { id:'soma-glass-17', name:'SOMA Glass Bottle 17oz', brand:'SOMA', price:30, priceTier:'mid', oz:17, sizeTier:'small', material:'glass', insulated:false, features:['light'], uses:['everyday','office','travel'], tempTiers:['cold','none'], highlight:['Borosilicate glass','Silicone sleeve','Flip-top cap'], color:'#0891b2', url:'https://www.amazon.com/dp/B07MGGYPQC?tag=bottlefinders-20' },
+  { id:'hydaway-collapsible-21', name:'HYDAWAY Collapsible 21oz', brand:'HYDAWAY', price:30, priceTier:'mid', oz:21, sizeTier:'medium', material:'plastic', insulated:false, features:['light'], uses:['travel','outdoor','everyday'], tempTiers:['cold','none'], highlight:['Collapses flat','Pocket-sized when empty','Travel essential'], color:'#374151', url:'https://www.amazon.com/dp/B073R14BWS?tag=bottlefinders-20' },
+  { id:'embrava-32', name:'Embrava Sports Bottle 32oz', brand:'Embrava', price:15, priceTier:'low', oz:32, sizeTier:'large', material:'plastic', insulated:false, features:['wide','light'], uses:['gym','outdoor','everyday'], tempTiers:['cold','none'], highlight:['Fast-flow flip lid','BPA-free Tritan','Budget sports'], color:'#7c3aed', url:'https://www.amazon.com/dp/B07CM8GLN9?tag=bottlefinders-20' },
+  { id:'hydro-flask-24', name:'Hydro Flask 24oz Standard Mouth', brand:'Hydro Flask', price:40, priceTier:'mid', oz:24, sizeTier:'medium', material:'steel', insulated:true, features:['light'], uses:['outdoor','gym','everyday'], tempTiers:['cold','hot','both'], highlight:['Compact 24oz','24hr cold / 12hr hot','Flex cap'], color:'#94a3b8', url:'https://www.amazon.com/dp/B01KXHIXSK?tag=bottlefinders-20' },
+  { id:'camelbak-eddy-kids-12', name:"CamelBak eddy+ Kids 12oz", brand:'CamelBak', price:25, priceTier:'mid', oz:12, sizeTier:'small', material:'steel', insulated:true, features:['straw','light'], uses:['kids','everyday','outdoor'], tempTiers:['cold','both'], highlight:['Kids insulated straw','Bite valve lid','BPA-free'], color:'#7c3aed', url:'https://www.amazon.com/dp/B0C8JFMN15?tag=bottlefinders-20' },
+  { id:'cirkul-22', name:'Cirkul 22oz Flavor Bottle', brand:'Cirkul', price:15, priceTier:'low', oz:22, sizeTier:'medium', material:'plastic', insulated:false, features:['filter','straw','light'], uses:['everyday','gym','office'], tempTiers:['cold','none'], highlight:['Dial flavor intensity','Flavor cartridge system','Encourages hydration'], color:'#2563eb', url:'https://www.amazon.com/dp/B0CY311DGH?tag=bottlefinders-20' },
+  { id:'ecovessel-perk-16', name:'EcoVessel Perk 16oz Tea Tumbler', brand:'EcoVessel', price:30, priceTier:'mid', oz:16, sizeTier:'small', material:'steel', insulated:true, features:['filter','light'], uses:['office','travel','everyday'], tempTiers:['cold','hot','both'], highlight:['Built-in tea strainer','Push-button lid','Triple insulated'], color:'#78716c', url:'https://www.amazon.com/dp/B07FK9P3H5?tag=bottlefinders-20' },
+  { id:'iron-flask-gallon', name:'Iron Flask 128oz Gallon Jug', brand:'Iron Flask', price:40, priceTier:'mid', oz:128, sizeTier:'xl', material:'steel', insulated:true, features:['wide','handle'], uses:['gym','outdoor','everyday'], tempTiers:['cold','hot','both'], highlight:['Full gallon','Straw + spout lids','24hr insulated'], color:'#0f766e', url:'https://www.amazon.com/dp/B0B6MVLWM1?tag=bottlefinders-20' },
+  { id:'klean-kanteen-kids-12', name:'Klean Kanteen Classic Kids 12oz', brand:'Klean Kanteen', price:32, priceTier:'mid', oz:12, sizeTier:'small', material:'steel', insulated:true, features:['straw','light'], uses:['kids','everyday','outdoor'], tempTiers:['cold','both'], highlight:['Kids flip-seal straw','Climate Neutral','BPA-free steel'], color:'#ca8a04', url:'https://www.amazon.com/dp/B0F1ZLZNML?tag=bottlefinders-20' },
+  { id:'stanley-iceflow-30', name:'Stanley IceFlow 2.0 30oz', brand:'Stanley', price:35, priceTier:'mid', oz:30, sizeTier:'large', material:'steel', insulated:true, features:['straw','handle'], uses:['everyday','gym','travel'], tempTiers:['cold','both'], highlight:['Flip straw lid','Carry handle','Leak resistant'], color:'#6b7280', url:'https://www.amazon.com/dp/B0DR9ML5X9?tag=bottlefinders-20' },
+  { id:'owala-freesip-24', name:'Owala FreeSip 24oz', brand:'Owala', price:30, priceTier:'mid', oz:24, sizeTier:'medium', material:'steel', insulated:true, features:['straw','light'], uses:['everyday','gym','travel'], tempTiers:['cold','both'], highlight:['Dual straw & sip','Leak-proof lid','Compact 24oz'], color:'#7c3aed', url:'https://www.amazon.com/dp/B0F359FRH8?tag=bottlefinders-20' },
+];
+
+const BOTTLE_IMAGES = {
+  'hydro-flask-32':'https://m.media-amazon.com/images/I/61rbIdWHoML._SL250_.jpg',
+  'stanley-quencher-40':'https://m.media-amazon.com/images/I/41ryNvEnNCL._SL250_.jpg',
+  'owala-freesip-32':'https://m.media-amazon.com/images/I/316qek8KPzL._SL250_.jpg',
+  'yeti-rambler-36':'https://m.media-amazon.com/images/I/61OtdVxiaEL._SL250_.jpg',
+  'nalgene-32':'https://m.media-amazon.com/images/I/71oPAKdKlvL._SL250_.jpg',
+  'camelbak-chute-25':'https://m.media-amazon.com/images/I/61cypuCcWrL._SL250_.jpg',
+  'brita-36-filter':'https://m.media-amazon.com/images/I/61IG3AsXgkL._SL250_.jpg',
+  'lifestraw-go-22':'https://m.media-amazon.com/images/I/61bJ-YVsS9L._SL250_.jpg',
+  'contigo-autoseal-24':'https://m.media-amazon.com/images/I/71p1VBaFEYL._SL250_.jpg',
+  'klean-kanteen-27':'https://m.media-amazon.com/images/I/61EkXhJbAXL._SL250_.jpg',
+  'swell-25':'https://m.media-amazon.com/images/I/51-nYf2W3UL._SL250_.jpg',
+  'takeya-actives-32':'https://m.media-amazon.com/images/I/51MhE8arCFL._SL250_.jpg',
+  'bkr-little-16':'https://m.media-amazon.com/images/I/51Z7kug6CYL._SL250_.jpg',
+  'lifefactory-22-glass':'https://m.media-amazon.com/images/I/71M0BqUCwlL._SL250_.jpg',
+  'hydro-flask-12-kids':'https://m.media-amazon.com/images/I/513wsvEY7VL._SL250_.jpg',
+  'camelbak-eddy-plus-25':'https://m.media-amazon.com/images/I/61bfQouqb4L._SL250_.jpg',
+  'nalgene-silo-48':'https://m.media-amazon.com/images/I/71r9L6uikjL._SL250_.jpg',
+  'hydrojug-pro-73':'https://m.media-amazon.com/images/I/31fzZV-3DjL._SL250_.jpg',
+  'blenderbottle-classic-28':'https://m.media-amazon.com/images/I/41W52ukYnJL._SL250_.jpg',
+  'hydro-flask-32-trail':'https://m.media-amazon.com/images/I/51KuOqj6txL._SL250_.jpg',
+  'yeti-rambler-64':'https://m.media-amazon.com/images/I/61p21aBxx+L._SL250_.jpg',
+  'simple-modern-summit-32':'https://m.media-amazon.com/images/I/41AZMMCugQL._SL250_.jpg',
+  'iron-flask-32':'https://m.media-amazon.com/images/I/51Mx8sbOFCL._SL250_.jpg',
+  'thermos-funtainer-16':'https://m.media-amazon.com/images/I/717zPAroQSL._SL250_.jpg',
+  'reduce-hydrate-pro-24':'https://m.media-amazon.com/images/I/51IyjkbOpzL._SL250_.jpg',
+  'zojirushi-sm-va-24':'https://m.media-amazon.com/images/I/411FweVngjL._SL250_.jpg',
+  'corkcicle-canteen-25':'https://m.media-amazon.com/images/I/51GJ-OoU-BL._SL250_.jpg',
+  'miir-narrow-23':'https://m.media-amazon.com/images/I/61qIC9+46GL._SL250_.jpg',
+  'fifty-fifty-34':'https://m.media-amazon.com/images/I/41LmpQqxXLL._SL250_.jpg',
+  'ello-syndicate-20':'https://m.media-amazon.com/images/I/710nAyuhJQL._SL250_.jpg',
+  'camelbak-podium-24':'https://m.media-amazon.com/images/I/51ylJj5UchL._SL250_.jpg',
+  'thermos-funtainer-12-straw':'https://m.media-amazon.com/images/I/41NryJJiMqL._SL250_.jpg',
+  'larq-purvis-17':'https://m.media-amazon.com/images/I/61nVfo9GrQL._SL250_.jpg',
+  'zulu-goals-64':'https://m.media-amazon.com/images/I/71AvQtk9nmL._SL250_.jpg',
+  'nalgene-sustain-32':'https://m.media-amazon.com/images/I/71Gl6mQYGPL._SL250_.jpg',
+  'yeti-rambler-mug-14':'https://m.media-amazon.com/images/I/81WztMqzRcL._SL250_.jpg',
+  'zojirushi-mug-16':'https://m.media-amazon.com/images/I/41mT+QeojAL._SL250_.jpg',
+  'mira-17':'https://m.media-amazon.com/images/I/81NyNauWGwL._SL250_.jpg',
+  'healthy-human-21':'https://m.media-amazon.com/images/I/717dln3YTNL._SL250_.jpg',
+  'soma-glass-17':'https://m.media-amazon.com/images/I/61VvnNNZFVL._SL250_.jpg',
+  'hydaway-collapsible-21':'https://m.media-amazon.com/images/I/61aK8kRX4gL._SL250_.jpg',
+  'embrava-32':'https://m.media-amazon.com/images/I/712ulhfSt+L._SL250_.jpg',
+  'hydro-flask-24':'https://m.media-amazon.com/images/I/61v5ydIs6LL._SL250_.jpg',
+  'camelbak-eddy-kids-12':'https://m.media-amazon.com/images/I/81D0ywaeMWL._SL250_.jpg',
+  'cirkul-22':'https://m.media-amazon.com/images/I/81qTpMJUfiL._SL250_.jpg',
+  'ecovessel-perk-16':'https://m.media-amazon.com/images/I/71QZdzUwGgL._SL250_.jpg',
+  'iron-flask-gallon':'https://m.media-amazon.com/images/I/61jExHOQM0L._SL250_.jpg',
+  'klean-kanteen-kids-12':'https://m.media-amazon.com/images/I/51dBkuEYZ3L._SL250_.jpg',
+  'stanley-iceflow-30':'https://m.media-amazon.com/images/I/51mLnHdRpxL._SL250_.jpg',
+  'owala-freesip-24':'https://m.media-amazon.com/images/I/51CxthyDrPL._SL250_.jpg',
+};
+
+// ─── STATE ────────────────────────────────────────────────────────────────
+let currentStep = 0;
+let answers = {};
+let sortMode = 'relevance';
+let showMl = false;
+let scoredBottles = [];
+
+// ─── ANALYTICS ───────────────────────────────────────────────────────────
+function trackEvent(type, data = {}) {
+  const event = { type, data, ts: Date.now() };
+  const events = JSON.parse(localStorage.getItem('bf_events') || '[]');
+  events.push(event);
+  localStorage.setItem('bf_events', JSON.stringify(events));
+  fetch('/api/track', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(event) }).catch(()=>{});
+}
+
+// ─── QUIZ ─────────────────────────────────────────────────────────────────
+function startQuiz() {
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('wizard-section').style.display = 'block';
+  window.scrollTo({ top: document.getElementById('wizard-section').offsetTop - 64 });
+  currentStep = 0;
+  answers = {};
+  renderStep();
+  trackEvent('wizard_start');
+}
+
+function isOptionSelected(q, value) {
+  if (q.multiSelect) return (answers[q.id] || []).includes(value);
+  return answers[q.id] === value;
+}
+
+function getLabel(q, opt) {
+  if (q.showUnit) return showMl ? opt.labelMl : opt.labelOz;
+  return opt.label;
+}
+
+function renderStep() {
+  const q = QUESTIONS[currentStep];
+  const total = QUESTIONS.length;
+  const pct = ((currentStep + 1) / total) * 100;
+
+  document.getElementById('progress-bar').style.width = pct + '%';
+
+  const backBtn = document.getElementById('back-btn');
+  backBtn.style.display = currentStep === 0 ? 'none' : 'inline-flex';
+
+  const isLast = currentStep === total - 1;
+  document.getElementById('next-label').textContent = isLast ? 'See My Matches' : 'Next';
+
+  const hasAnswer = q.optional ? true : q.multiSelect ? (answers[q.id]||[]).length>0 : !!answers[q.id];
+  document.getElementById('next-btn').disabled = !hasAnswer;
+  document.getElementById('skip-hint').style.display = q.optional ? 'block' : 'none';
+
+  const unitHtml = q.showUnit ? `
+    <button class="unit-toggle" onclick="toggleUnit()">
+      <i data-lucide="arrow-left-right" style="width:12px;height:12px"></i>
+      ${showMl ? 'Switch to oz' : 'Switch to ml'}
+    </button>` : '';
+
+  const hintHtml = q.hint ? `<p class="wizard-hint">${q.hint}</p>` : '<div style="height:32px"></div>';
+
+  const optionsHtml = q.options.map(opt => {
+    const selected = isOptionSelected(q, opt.value);
+    const label = getLabel(q, opt);
+    const handler = q.multiSelect
+      ? `selectMulti('${q.id}','${opt.value}',this,${!!q.optional})`
+      : `selectSingle('${q.id}','${opt.value}',this)`;
+
+    const checkHtml = q.multiSelect ? `
+      <div data-checkbox class="option-check ${selected ? 'checked' : ''}">
+        ${selected ? '<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#fff;stroke-width:3;fill:none"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+      </div>` : '';
+
+    return `<button class="option-tile ${selected ? 'selected' : ''}" onclick="${handler}" data-value="${opt.value}">
+      <div class="option-icon">
+        <i data-lucide="${opt.icon}" style="width:16px;height:16px;color:var(--ink-2)"></i>
+      </div>
+      <span class="option-label">${label}</span>
+      ${checkHtml}
+    </button>`;
+  }).join('');
+
+  document.getElementById('step-container').innerHTML = `
+    <div class="step-anim">
+      <span class="wizard-q-num">0${currentStep + 1}</span>
+      <h2 class="wizard-question">${q.question}${q.optional ? ` <span class="wizard-optional">(optional)</span>` : ''}</h2>
+      ${hintHtml}
+      ${unitHtml}
+      <div class="options-grid">${optionsHtml}</div>
+    </div>`;
+  lucide.createIcons();
+}
+
+function selectSingle(qId, value, el) {
+  answers[qId] = value;
+  document.querySelectorAll('.option-tile').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelectorAll('.option-icon i').forEach(i => i.style.color = '#fff');
+  document.getElementById('next-btn').disabled = false;
+  // Re-render to sync icon colors properly
+  setTimeout(() => renderStep(), 0);
+}
+
+function selectMulti(qId, value, el, optional) {
+  if (!answers[qId]) answers[qId] = [];
+  const idx = answers[qId].indexOf(value);
+  const nowSelected = idx === -1;
+  if (nowSelected) answers[qId].push(value); else answers[qId].splice(idx, 1);
+  el.classList.toggle('selected', nowSelected);
+  const cb = el.querySelector('[data-checkbox]');
+  if (cb) {
+    cb.className = 'option-check' + (nowSelected ? ' checked' : '');
+    cb.innerHTML = nowSelected ? '<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#fff;stroke-width:3;fill:none"><polyline points="20 6 9 17 4 12"/></svg>' : '';
+  }
+  const icon = el.querySelector('.option-icon i');
+  if (icon) icon.style.color = nowSelected ? '#fff' : 'var(--ink-2)';
+  if (!optional) document.getElementById('next-btn').disabled = answers[qId].length === 0;
+}
+
+function toggleUnit() { showMl = !showMl; renderStep(); }
+
+function scrollToWizard() {
+  document.getElementById('wizard-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function nextStep() {
+  const q = QUESTIONS[currentStep];
+  const hasAnswer = q.optional ? true : q.multiSelect ? (answers[q.id]||[]).length>0 : !!answers[q.id];
+  if (!hasAnswer) return;
+  scrollToWizard();
+  if (currentStep < QUESTIONS.length - 1) { currentStep++; renderStep(); }
+  else showResults();
+}
+
+function prevStep() {
+  if (currentStep > 0) { currentStep--; scrollToWizard(); renderStep(); }
+}
+
+function resetQuiz() {
+  answers = {}; currentStep = 0; sortMode = 'relevance';
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('wizard-section').style.display = 'none';
+  document.getElementById('hero').style.display = '';
+  const navCta = document.getElementById('nav-cta');
+  navCta.innerHTML = 'Find My Bottle <i data-lucide="arrow-right" style="width:14px;height:14px"></i>';
+  navCta.onclick = startQuiz;
+  lucide.createIcons();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── SCORING ──────────────────────────────────────────────────────────────
+function scoreBottles() {
+  return BOTTLES.map(b => {
+    let score = 0; const a = answers;
+    const useList = Array.isArray(a.use) ? a.use : [];
+    const useMatches = useList.filter(u => b.uses.includes(u)).length;
+    if (useMatches > 0) score += Math.min(useMatches, 2) * 18;
+    const sizeMap = { small:['small'], medium:['small','medium'], large:['medium','large'], xl:['large','xl'] };
+    if (a.size && sizeMap[a.size]?.includes(b.sizeTier)) score += 20;
+    if (a.temp) {
+      if (a.temp === 'none') score += 10;
+      else if (a.temp === 'both' && b.insulated) score += 20;
+      else if (b.tempTiers.includes(a.temp)) score += 20;
+    }
+    if (a.material) {
+      if (a.material === 'any') score += 10;
+      else if (b.material === a.material) score += 20;
+    }
+    const featureList = Array.isArray(a.features) ? a.features : [];
+    score += featureList.filter(f => b.features.includes(f)).length * 20;
+    const avoidList = Array.isArray(a.avoid) ? a.avoid : [];
+    avoidList.forEach(key => { if (AVOID_CHECKS[key]?.(b)) score -= 35; });
+    const tiers = ['low','mid','high','premium'];
+    const budgetList = Array.isArray(a.budget) ? a.budget : (a.budget ? [a.budget] : []);
+    if (budgetList.length > 0) {
+      if (budgetList.includes(b.priceTier)) score += 20;
+      else {
+        const minDist = Math.min(...budgetList.map(bg => Math.abs(tiers.indexOf(bg) - tiers.indexOf(b.priceTier))));
+        if (minDist === 1) score += 8;
+      }
+    }
+    return { ...b, score };
+  }).sort((a, b) => b.score - a.score);
+}
+
+function sortedBottles() {
+  switch (sortMode) {
+    case 'price-asc':  return [...scoredBottles].sort((a,b) => a.price - b.price);
+    case 'price-desc': return [...scoredBottles].sort((a,b) => b.price - a.price);
+    case 'size-asc':   return [...scoredBottles].sort((a,b) => a.oz - b.oz);
+    case 'size-desc':  return [...scoredBottles].sort((a,b) => b.oz - a.oz);
+    default:           return [...scoredBottles];
+  }
+}
+
+function setSort(mode) {
+  sortMode = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === mode));
+  renderResultsGrid();
+}
+
+const ANSWER_LABELS = {
+  use:      { everyday:'Everyday', gym:'Gym', outdoor:'Hiking', office:'Office', travel:'Travel', kids:'Kids' },
+  size:     { small:'Up to 16 oz', medium:'20–27 oz', large:'28–36 oz', xl:'40+ oz' },
+  temp:     { cold:'Cold', hot:'Hot', both:'Hot & cold', none:'No pref' },
+  material: { steel:'Stainless', plastic:'Plastic', glass:'Glass', any:'Any material' },
+  features: { filter:'Filter', straw:'Straw lid', wide:'Wide mouth', handle:'Handle', light:'Lightweight' },
+  avoid:    { straw:'No straw', handle:'No handle', wide:'No wide mouth', filter:'No filter', plastic:'No plastic', glass:'No glass', insulated:'No insulation', bulky:'No XL' },
+  budget:   { low:'Under $20', mid:'$20–$40', high:'$40–$60', premium:'$60+' },
+};
+
+function buildSummaryChips() {
+  return QUESTIONS.map(q => {
+    const val = answers[q.id];
+    if (!val || (Array.isArray(val) && val.length === 0)) return null;
+    const map = ANSWER_LABELS[q.id] || {};
+    const display = Array.isArray(val) ? val.map(v => map[v]||v).join(', ') : (map[val]||val);
+    const shortQ = q.question.replace('?','').replace(/\(optional\)/i,'').trim().split(' ').slice(0,2).join(' ');
+    return `<span class="summary-chip"><span>${shortQ}:</span> ${display}</span>`;
+  }).filter(Boolean).join('');
+}
+
+function showResults() {
+  trackEvent('wizard_complete', { answers });
+  document.getElementById('wizard-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'block';
+  const navCta = document.getElementById('nav-cta');
+  navCta.innerHTML = 'Start Over <i data-lucide="refresh-cw" style="width:14px;height:14px"></i>';
+  navCta.onclick = resetQuiz;
+  lucide.createIcons();
+
+  sortMode = 'relevance';
+  scoredBottles = scoreBottles();
+
+  document.getElementById('results-summary').innerHTML = `
+    <div class="results-summary-bar">
+      <span class="label" style="flex-shrink:0">Your answers</span>
+      ${buildSummaryChips()}
+      <button onclick="editAnswers()" class="btn" style="margin-left:auto;font-size:12px;color:var(--amber);font-weight:600;background:none;border:none;cursor:pointer;padding:0;gap:4px">
+        <i data-lucide="pencil" style="width:12px;height:12px"></i> Edit
+      </button>
+    </div>`;
+
+  document.getElementById('results-controls').innerHTML = `
+    <div class="sort-bar">
+      <span class="label">Sort:</span>
+      <button class="sort-btn active" data-sort="relevance"  onclick="setSort('relevance')">Best match</button>
+      <button class="sort-btn"        data-sort="price-asc"  onclick="setSort('price-asc')">Price ↑</button>
+      <button class="sort-btn"        data-sort="price-desc" onclick="setSort('price-desc')">Price ↓</button>
+      <button class="sort-btn"        data-sort="size-asc"   onclick="setSort('size-asc')">Size ↑</button>
+      <button class="sort-btn"        data-sort="size-desc"  onclick="setSort('size-desc')">Size ↓</button>
+    </div>`;
+  lucide.createIcons();
+
+  renderResultsGrid();
+  window.scrollTo({ top: document.getElementById('results-section').offsetTop - 64 });
+}
+
+function editAnswers() {
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('wizard-section').style.display = 'block';
+  currentStep = 0; renderStep();
+  window.scrollTo({ top: document.getElementById('wizard-section').offsetTop - 64 });
+}
+
+function renderResultsGrid() {
+  const grid = document.getElementById('results-grid');
+  grid.innerHTML = '';
+  const bottles = sortedBottles();
+  bottles.forEach((b, idx) => {
+    const isBest = sortMode === 'relevance' && idx === 0;
+    const materialLabel = b.material === 'steel' ? 'Stainless steel' : b.material === 'plastic' ? 'BPA-free plastic' : 'Glass';
+    const imgUrl = BOTTLE_IMAGES[b.id] || '';
+    const card = document.createElement('div');
+    card.className = 'bottle-card fade-in';
+    card.style.transitionDelay = (idx * 0.035) + 's';
+    card.innerHTML = `
+      <div class="card-img">
+        ${isBest ? '<div class="card-badge">Best Match</div>' : ''}
+        ${imgUrl ? `<img src="${imgUrl}" alt="${b.name}" onerror="this.style.display='none'">` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-body-top">
+          <div class="card-brand">${b.brand}</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">
+            <h3 class="card-name">${b.name}</h3>
+            <span class="card-price">$${b.price}</span>
+          </div>
+          <p class="card-meta">${b.oz} oz · ${materialLabel}</p>
+          <div class="card-highlights">
+            ${b.highlight.map(h => `<span class="card-tag">${h}</span>`).join('')}
+          </div>
+        </div>
+        <a href="${b.url}" target="_blank" rel="noopener" class="card-cta" onclick="trackEvent('bottle_click',{id:'${b.id}',name:'${b.name}'})">
+          <i data-lucide="shopping-bag" style="width:14px;height:14px"></i>
+          Buy on Amazon
+        </a>
+      </div>`;
+    grid.appendChild(card);
+  });
+  lucide.createIcons();
+  setTimeout(() => document.querySelectorAll('#results-grid .fade-in').forEach(el => el.classList.add('visible')), 50);
+}
+
+// ─── SCROLL ANIMATIONS ────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.06 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+    });
+  }, 50);
+  trackEvent('page_view');
+});
+
+// ─── FEEDBACK ─────────────────────────────────────────────────────────────
+function toggleFeedback() {
+  document.getElementById('feedback-panel').classList.toggle('open');
+}
+function closeFeedback() {
+  document.getElementById('feedback-panel').classList.remove('open');
+}
+async function submitFeedback() {
+  const message = document.getElementById('fb-message').value.trim();
+  const email = document.getElementById('fb-email').value.trim();
+  const errEl = document.getElementById('fb-error');
+  if (!message) { errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+  fetch('/api/feedback', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message,email}) }).catch(()=>{});
+  document.getElementById('fb-form').style.display = 'none';
+  document.getElementById('fb-success').style.display = 'block';
+  setTimeout(() => {
+    closeFeedback();
+    setTimeout(() => {
+      document.getElementById('fb-form').style.display = 'block';
+      document.getElementById('fb-success').style.display = 'none';
+      document.getElementById('fb-message').value = '';
+      document.getElementById('fb-email').value = '';
+    }, 400);
+  }, 2500);
+}
+</script>
+</body>
+</html>
