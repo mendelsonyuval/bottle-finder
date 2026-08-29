@@ -444,6 +444,66 @@
     }
     .card-cta:hover { background: #2E2720; }
 
+    /* ── SHARE ── */
+    .share-card {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+      background: var(--amber-lt);
+      border: 1px solid #EFE0CB;
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 40px;
+    }
+    .share-card-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .share-card-sub { font-size: 13px; color: var(--ink-2); }
+    .btn-share {
+      background: var(--ink); color: var(--bg);
+      padding: 10px 20px; border-radius: 100px;
+    }
+    .btn-share:hover { background: #2E2720; transform: translateY(-1px); }
+    .footer-share {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 600; color: var(--ink-2);
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; padding: 0;
+      transition: color 0.15s;
+    }
+    .footer-share:hover { color: var(--amber); }
+    .share-wrap { position: relative; }
+    .share-panel {
+      display: none;
+      margin-bottom: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+      overflow: hidden;
+      width: 264px;
+    }
+    .share-panel.open { display: block; }
+    .share-panel-body { padding: 8px; }
+    .share-opt {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 10px 12px;
+      background: none; border: none; border-radius: 10px;
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      color: var(--ink); text-align: left; text-decoration: none;
+      cursor: pointer; transition: background 0.12s;
+    }
+    .share-opt:hover { background: var(--bg); }
+    .share-opt i { color: var(--ink-3); flex-shrink: 0; }
+    .share-nudge {
+      position: absolute; bottom: calc(100% + 10px); left: 0;
+      width: 236px;
+      background: var(--ink); color: var(--bg);
+      font-size: 12.5px; font-weight: 500; line-height: 1.5;
+      padding: 12px 14px; border-radius: 12px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.16);
+      opacity: 0; transform: translateY(6px); pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .share-nudge.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
     /* ── HOW IT WORKS ── */
     #how-it-works {
       border-top: 1px solid var(--border);
@@ -610,7 +670,11 @@
     .footer-note { font-size: 12px; color: var(--ink-3); max-width: 480px; line-height: 1.6; }
 
     /* ── FEEDBACK ── */
-    .feedback-wrap { position: fixed; bottom: 24px; left: 24px; z-index: 200; }
+    .dock {
+      position: fixed; bottom: 24px; left: 24px; z-index: 200;
+      display: flex; align-items: flex-end; gap: 10px;
+    }
+    .feedback-wrap { position: relative; }
     .feedback-panel {
       display: none;
       margin-bottom: 10px;
@@ -658,7 +722,7 @@
     .feedback-success { display: none; padding: 28px 20px; text-align: center; }
     .feedback-success p:first-child { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
     .feedback-success p:last-child { font-size: 13px; color: var(--ink-3); }
-    .feedback-trigger {
+    .feedback-trigger, .share-trigger {
       display: flex; align-items: center; gap: 8px;
       background: var(--ink); color: var(--bg);
       border: none; font-family: inherit; font-size: 13px; font-weight: 600;
@@ -666,9 +730,23 @@
       cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.12);
       transition: background 0.12s;
     }
-    .feedback-trigger:hover { background: #2E2720; }
+    .feedback-trigger:hover, .share-trigger:hover { background: #2E2720; }
 
     /* ── ANIMATIONS ── */
+
+    @media (max-width: 640px) {
+      .dock { left: 16px; bottom: 16px; gap: 8px; }
+      .feedback-panel { width: calc(100vw - 40px); max-width: 320px; }
+      /* Anchored to the viewport, not the trigger: the dock's second item
+         would otherwise push the panel off the right edge. */
+      .share-panel, .share-nudge {
+        position: fixed; left: 16px; right: 16px; bottom: 66px;
+        width: auto; max-width: none; margin-bottom: 0;
+      }
+      .share-card { padding: 20px; }
+      .share-card .btn-share { width: 100%; justify-content: center; }
+    }
+
     .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.5s, transform 0.5s; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
     .step-anim { animation: stepIn 0.28s ease forwards; }
@@ -864,6 +942,17 @@
     <div id="results-summary"></div>
     <div id="results-controls"></div>
     <div id="results-grid" class="results-grid"></div>
+
+    <div id="share-card" class="share-card fade-in">
+      <div>
+        <div class="share-card-title">Know someone shopping for a bottle?</div>
+        <div class="share-card-sub">Send them the quiz — 7 questions, one minute, no signup.</div>
+      </div>
+      <button class="btn btn-share" onclick="shareApp('results', this)">
+        <i data-lucide="share-2" style="width:15px;height:15px"></i>
+        <span>Share the quiz</span>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -1014,6 +1103,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
     <a href="#" class="nav-logo" style="text-decoration:none" onclick="resetQuiz();return false;">
       <div class="nav-logo-mark">
         <svg viewBox="0 0 28 36" fill="none" width="28" height="36">
@@ -1026,11 +1116,18 @@
       </div>
       Bottle Finder
     </a>
-    <p class="footer-note">Bottle Finder participates in affiliate programs including Amazon Associates. We earn a small commission when you purchase through our links, at no extra cost to you. Availability last verified July 2026; check Amazon for current pricing.</p>
+    <button class="footer-share" onclick="shareApp('footer', this)">
+      <i data-lucide="share-2" style="width:14px;height:14px"></i>
+      <span>Share Bottle Finder</span>
+    </button>
+    </div>
+    <p class="footer-note">As an Amazon Associate I earn from qualifying purchases. Links to Amazon on this site are affiliate links, and buying through them costs you nothing extra. Availability last verified August 2026; check Amazon for current pricing.</p>
   </div>
 </footer>
 
-<!-- FEEDBACK -->
+<!-- UTILITY DOCK -->
+<div class="dock">
+
 <div class="feedback-wrap">
   <div id="feedback-panel" class="feedback-panel">
     <div class="feedback-panel-head">
@@ -1052,6 +1149,38 @@
     <i data-lucide="message-circle" style="width:15px;height:15px"></i>
     Feedback
   </button>
+</div>
+
+<div class="share-wrap">
+  <div id="share-nudge" class="share-nudge">
+    Enjoyed Bottle Finder? Send the quiz to someone who needs a bottle.
+  </div>
+  <div id="share-panel" class="share-panel">
+    <div class="feedback-panel-head">
+      <span>Share Bottle Finder</span>
+      <button onclick="closeSharePanel()" aria-label="Close"><i data-lucide="x" style="width:15px;height:15px"></i></button>
+    </div>
+    <div class="share-panel-body">
+      <button class="share-opt" onclick="shareVia('copy', this)">
+        <i data-lucide="link" style="width:16px;height:16px"></i>
+        <span>Copy link</span>
+      </button>
+      <button class="share-opt" onclick="shareVia('whatsapp', this)">
+        <i data-lucide="message-circle" style="width:16px;height:16px"></i>
+        <span>WhatsApp</span>
+      </button>
+      <button class="share-opt" onclick="shareVia('email', this)">
+        <i data-lucide="mail" style="width:16px;height:16px"></i>
+        <span>Email</span>
+      </button>
+    </div>
+  </div>
+  <button class="share-trigger" onclick="toggleShare(this)">
+    <i data-lucide="share-2" style="width:14px;height:14px"></i>
+    <span>Share</span>
+  </button>
+</div>
+
 </div>
 
 <script>
@@ -1522,7 +1651,7 @@ function renderResultsGrid() {
             ${b.highlight.map(h => `<span class="card-tag">${h}</span>`).join('')}
           </div>
         </div>
-        <a href="${b.url}" target="_blank" rel="noopener" class="card-cta" onclick="trackEvent('bottle_click',{id:'${b.id}',name:'${b.name}'})">
+        <a href="${b.url}" target="_blank" rel="sponsored noopener noreferrer" class="card-cta" onclick="trackEvent('bottle_click',{id:'${b.id}',name:'${b.name}'});markAmazonClick()">
           <i data-lucide="shopping-bag" style="width:14px;height:14px"></i>
           Check price on Amazon
         </a>
@@ -1547,6 +1676,124 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, 50);
   trackEvent('page_view');
+});
+
+// ─── SHARE ────────────────────────────────────────────────────────────────
+const SHARE_URL   = 'https://mybottlefinder.com/';
+const SHARE_TITLE = 'Bottle Finder — free water bottle quiz';
+const SHARE_TEXT  = 'Free quiz that matches you with the right water bottle — mybottlefinder.com';
+
+function shareApp(source, btn) {
+  trackEvent('share_click', { from: source });
+  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  if (navigator.share && coarse) {
+    navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: SHARE_URL })
+      .then(() => trackEvent('share_complete', { from: source }))
+      .catch(() => {});
+    return;
+  }
+  copyShareLink(source, btn);
+}
+
+function copyShareLink(source, btn) {
+  const done = () => {
+    trackEvent('share_complete', { from: source });
+    flashCopied(btn);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(SHARE_TEXT).then(done).catch(() => legacyCopy(done));
+  } else {
+    legacyCopy(done);
+  }
+}
+
+function legacyCopy(done) {
+  const ta = document.createElement('textarea');
+  ta.value = SHARE_TEXT;
+  ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+function flashCopied(btn) {
+  if (!btn) return;
+  const label = btn.querySelector('span');
+  if (!label || btn.dataset.flashing) return;
+  btn.dataset.flashing = '1';
+  const original = label.textContent;
+  label.textContent = 'Link copied';
+  setTimeout(() => { label.textContent = original; delete btn.dataset.flashing; }, 2000);
+}
+
+// Floating share bubble
+const SHARE_CHANNELS = {
+  whatsapp: () => 'https://wa.me/?text=' + encodeURIComponent(SHARE_TEXT),
+  email:    () => 'mailto:?subject=' + encodeURIComponent('A quiz to find the right water bottle') + '&body=' + encodeURIComponent(SHARE_TEXT)
+};
+
+function toggleShare(btn) {
+  hideShareNudge();
+  // On touch devices the OS share sheet beats our own menu.
+  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  if (navigator.share && coarse) { shareApp('bubble', btn); return; }
+  closeFeedback();
+  const panel = document.getElementById('share-panel');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open');
+  if (opening) trackEvent('share_panel_open', { from: 'bubble' });
+}
+
+function closeSharePanel() {
+  document.getElementById('share-panel').classList.remove('open');
+}
+
+function shareVia(channel, btn) {
+  trackEvent('share_click', { from: 'bubble', channel });
+  if (channel === 'copy') { copyShareLink('bubble', btn); return; }
+  const url = SHARE_CHANNELS[channel]();
+  if (channel === 'email') { window.location.href = url; }
+  else { window.open(url, '_blank', 'noopener'); }
+  trackEvent('share_complete', { from: 'bubble', channel });
+  closeSharePanel();
+}
+
+// Nudge the bubble once, after the user comes back from Amazon
+let amazonClicked = false;
+
+function markAmazonClick() { amazonClicked = true; }
+
+function shareNudgeSeen() {
+  try { return sessionStorage.getItem('bf_share_nudge') === '1'; } catch (e) { return false; }
+}
+
+function markShareNudgeSeen() {
+  try { sessionStorage.setItem('bf_share_nudge', '1'); } catch (e) {}
+}
+
+function hideShareNudge() {
+  document.getElementById('share-nudge').classList.remove('open');
+}
+
+function shareCardOnScreen() {
+  const sc = document.getElementById('share-card');
+  if (!sc || sc.offsetParent === null) return false;
+  const r = sc.getBoundingClientRect();
+  return r.top < window.innerHeight && r.bottom > 0;
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible') return;
+  if (!amazonClicked || shareNudgeSeen()) return;
+  // The end-of-results card already makes the ask; don't stack a second one.
+  if (shareCardOnScreen()) return;
+  markShareNudgeSeen();
+  setTimeout(() => {
+    document.getElementById('share-nudge').classList.add('open');
+    trackEvent('share_prompt_shown', { from: 'nudge' });
+    setTimeout(hideShareNudge, 9000);
+  }, 700);
 });
 
 // ─── FEEDBACK ─────────────────────────────────────────────────────────────

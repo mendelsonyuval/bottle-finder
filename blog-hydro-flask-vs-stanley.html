@@ -53,6 +53,40 @@
     .prose li { color: #57534e; line-height: 1.75; margin-bottom: 0.25rem; }
     .prose strong { color: #1c1917; font-weight: 600; }
     .prose a { color: #d97706; text-decoration: underline; }
+    /* Floating share bubble */
+    .share-dock { position: fixed; bottom: 24px; left: 24px; z-index: 200; }
+    .share-panel {
+      display: none; margin-bottom: 10px;
+      background: #fff; border: 1px solid #e7e5e4; border-radius: 20px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.1); overflow: hidden; width: 264px;
+    }
+    .share-panel.open { display: block; }
+    .share-panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; border-bottom: 1px solid #e7e5e4;
+      font-size: 14px; font-weight: 700; color: #1c1917;
+    }
+    .share-panel-head button { background: none; border: none; cursor: pointer; color: #a8a29e; padding: 2px; }
+    .share-panel-body { padding: 8px; }
+    .share-opt {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      padding: 10px 12px; background: none; border: none; border-radius: 10px;
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      color: #1c1917; text-align: left; cursor: pointer; transition: background 0.12s;
+    }
+    .share-opt:hover { background: #f5f5f4; }
+    .share-opt svg { color: #a8a29e; flex-shrink: 0; }
+    .share-trigger {
+      display: flex; align-items: center; gap: 8px;
+      background: #1c1917; color: #fff; border: none; font-family: inherit;
+      font-size: 13px; font-weight: 600; padding: 10px 18px; border-radius: 100px;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.12); transition: background 0.12s;
+    }
+    .share-trigger:hover { background: #292524; }
+    @media (max-width: 640px) {
+      .share-dock { left: 16px; bottom: 16px; }
+      .share-panel { position: fixed; left: 16px; right: 16px; bottom: 66px; width: auto; margin-bottom: 0; }
+    }
   </style>
 </head>
 <body class="bg-white text-stone-800 antialiased">
@@ -198,7 +232,41 @@
     </a>
   </div>
 
+  <!-- SHARE -->
+  <div class="mt-6 flex items-center justify-center gap-3 text-sm">
+    <span class="text-stone-400">Found this useful?</span>
+    <button onclick="shareApp('blog', this)" class="inline-flex items-center gap-2 font-semibold text-stone-600 hover:text-amber-600 transition">
+      <i data-lucide="share-2" class="w-4 h-4"></i>
+      <span>Share Bottle Finder</span>
+    </button>
+  </div>
+
 </main>
+
+<!-- FLOATING SHARE -->
+<div class="share-dock">
+  <div id="share-panel" class="share-panel">
+    <div class="share-panel-head">
+      <span>Share Bottle Finder</span>
+      <button onclick="closeSharePanel()" aria-label="Close"><i data-lucide="x" style="width:15px;height:15px"></i></button>
+    </div>
+    <div class="share-panel-body">
+      <button class="share-opt" onclick="shareVia('copy', this)">
+        <i data-lucide="link" style="width:16px;height:16px"></i><span>Copy link</span>
+      </button>
+      <button class="share-opt" onclick="shareVia('whatsapp', this)">
+        <i data-lucide="message-circle" style="width:16px;height:16px"></i><span>WhatsApp</span>
+      </button>
+      <button class="share-opt" onclick="shareVia('email', this)">
+        <i data-lucide="mail" style="width:16px;height:16px"></i><span>Email</span>
+      </button>
+    </div>
+  </div>
+  <button class="share-trigger" onclick="toggleShare(this)">
+    <i data-lucide="share-2" style="width:14px;height:14px"></i>
+    <span>Share</span>
+  </button>
+</div>
 
 <!-- FOOTER -->
 <footer class="border-t border-stone-100 py-10 mt-8">
@@ -211,11 +279,93 @@
       <span class="font-medium text-stone-700">Bottle Finder</span>
     </div>
     <p class="text-stone-400 text-sm max-w-md mx-auto leading-relaxed">
-      Bottle Finder participates in affiliate programs including Amazon Associates. We earn a small commission when you purchase through our links, at no extra cost to you.
+      As an Amazon Associate I earn from qualifying purchases. Links to Amazon on this site are affiliate links, and buying through them costs you nothing extra.
     </p>
   </div>
 </footer>
 
-<script>lucide.createIcons();</script>
+<script>
+lucide.createIcons();
+
+const SHARE_URL   = 'https://mybottlefinder.com/';
+const SHARE_TITLE = 'Bottle Finder \u2014 free water bottle quiz';
+const SHARE_TEXT  = 'Free quiz that matches you with the right water bottle \u2014 mybottlefinder.com';
+
+function trackEvent(type, data = {}) {
+  const event = { type, data, ts: Date.now() };
+  fetch('/api/track', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(event) }).catch(()=>{});
+}
+
+function shareApp(source, btn) {
+  trackEvent('share_click', { from: source, page: location.pathname });
+  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  if (navigator.share && coarse) {
+    navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: SHARE_URL })
+      .then(() => trackEvent('share_complete', { from: source }))
+      .catch(() => {});
+    return;
+  }
+  const done = () => { trackEvent('share_complete', { from: source }); flashCopied(btn); };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(SHARE_TEXT).then(done).catch(() => legacyCopy(done));
+  } else {
+    legacyCopy(done);
+  }
+}
+
+function legacyCopy(done) {
+  const ta = document.createElement('textarea');
+  ta.value = SHARE_TEXT;
+  ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+const SHARE_CHANNELS = {
+  whatsapp: () => 'https://wa.me/?text=' + encodeURIComponent(SHARE_TEXT),
+  email:    () => 'mailto:?subject=' + encodeURIComponent('A quiz to find the right water bottle') + '&body=' + encodeURIComponent(SHARE_TEXT)
+};
+
+function toggleShare(btn) {
+  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  if (navigator.share && coarse) { shareApp('bubble', btn); return; }
+  const panel = document.getElementById('share-panel');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open');
+  if (opening) trackEvent('share_panel_open', { from: 'bubble', page: location.pathname });
+}
+
+function closeSharePanel() {
+  document.getElementById('share-panel').classList.remove('open');
+}
+
+function shareVia(channel, btn) {
+  trackEvent('share_click', { from: 'bubble', channel, page: location.pathname });
+  if (channel === 'copy') {
+    const done = () => { trackEvent('share_complete', { from: 'bubble', channel }); flashCopied(btn); };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(SHARE_TEXT).then(done).catch(() => legacyCopy(done));
+    } else { legacyCopy(done); }
+    return;
+  }
+  const url = SHARE_CHANNELS[channel]();
+  if (channel === 'email') { window.location.href = url; }
+  else { window.open(url, '_blank', 'noopener'); }
+  trackEvent('share_complete', { from: 'bubble', channel });
+  closeSharePanel();
+}
+
+function flashCopied(btn) {
+  if (!btn) return;
+  const label = btn.querySelector('span');
+  if (!label || btn.dataset.flashing) return;
+  btn.dataset.flashing = '1';
+  const original = label.textContent;
+  label.textContent = 'Link copied';
+  setTimeout(() => { label.textContent = original; delete btn.dataset.flashing; }, 2000);
+}
+</script>
 </body>
 </html>
