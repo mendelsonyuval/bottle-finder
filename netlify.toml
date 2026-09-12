@@ -4,3 +4,48 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# publish = "." ships every file in the project root, and .netlifyignore is not
+# honoured for CLI publish-directory deploys, so unwanted paths are blocked here.
+# force = true is required because the underlying files do exist.
+
+# Design drafts: stale inventory/prices, crawlable, duplicate the homepage.
+# 301 to the canonical page so any accrued indexing consolidates there.
+[[redirects]]
+  from = "/index-v1.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/design-v2.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/design-preview.html"
+  to = "/"
+  status = 301
+  force = true
+
+# Internal notes and local config — should not be reachable at all.
+[[redirects]]
+  from = "/CLAUDE.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Defence in depth: Netlify does not serve dotfiles (verified: /.gitignore 404s),
+# but never rely on that alone for credentials.
+[[redirects]]
+  from = "/.env"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.env.*"
+  to = "/404.html"
+  status = 404
+  force = true
